@@ -35,6 +35,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,25 +48,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connections\DuplexService.cs" />
+    <Compile Include="GameChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameChooser.Designer.cs">
+      <DependentUpon>GameChooser.cs</DependentUpon>
+    </Compile>
     <Compile Include="History.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="History.Designer.cs">
       <DependentUpon>History.cs</DependentUpon>
     </Compile>
-    <Compile Include="Logic\Game.cs" />
-    <Compile Include="Logic\FromServer.cs" />
-    <Compile Include="Logic\Move.cs" />
+    <Compile Include="Logic\CheckersServiceCallbackHandler.cs" />
     <Compile Include="Pause.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Pause.Designer.cs">
       <DependentUpon>Pause.cs</DependentUpon>
     </Compile>
+    <Compile Include="Service References\CheckersService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Utils\Util.cs" />
     <Compile Include="Utils\ConvertDataButtomUp.cs" />
-    <Compile Include="Logic\Coordinate.cs" />
     <Compile Include="Logic\DataCellInfo.cs" />
     <Compile Include="GameBoard.cs">
       <SubType>Form</SubType>
@@ -87,6 +96,9 @@
     <Compile Include="UI\RowView.cs" />
     <EmbeddedResource Include="GameBoard.resx">
       <DependentUpon>GameBoard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameChooser.resx">
+      <DependentUpon>GameChooser.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="History.resx">
       <DependentUpon>History.cs</DependentUpon>
@@ -116,11 +128,40 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Service References\CheckersService\CheckersService.wsdl" />
+    <None Include="Service References\CheckersService\finalClient.CheckersService.Family.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CheckersService\finalClient.CheckersService.Game.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CheckersService\finalClient.CheckersService.Move.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CheckersService\finalClient.CheckersService.Player.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\CheckersService\Service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CheckersService\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\CheckersService\Service2.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\CheckersService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\CheckersService\configuration.svcinfo" />
+    <None Include="Service References\CheckersService\configuration91.svcinfo" />
+    <None Include="Service References\CheckersService\Service.disco" />
     <None Include="Images\history.png" />
     <None Include="Images\time_for_a_break.png" />
     <None Include="Images\White_square.png" />
@@ -140,7 +181,12 @@
     <None Include="Resources\Image1.jpg" />
     <None Include="Resources\board.bmp" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CheckersService\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

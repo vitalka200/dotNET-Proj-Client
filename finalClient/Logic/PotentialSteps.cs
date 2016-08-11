@@ -1,4 +1,5 @@
-﻿using finalClient.UI;
+﻿using finalClient.CheckersService;
+using finalClient.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,12 @@ namespace finalClient.Logic
             else
             {
                 int nextX = currentX - 1;
-                if (currentY == 3) { PotentialMoves.Add(new Coordinate(nextX, currentY - 1)); }
-                else if (currentY == 0) { PotentialMoves.Add(new Coordinate(nextX, currentY + 1)); }
+                if (currentY == 3) { PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY - 1 }); }
+                else if (currentY == 0) { PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY + 1}); }
                 else
                 {
-                    PotentialMoves.Add(new Coordinate(nextX, currentY - 1));
-                    PotentialMoves.Add(new Coordinate(nextX, currentY + 1));
+                    PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY - 1 });
+                    PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY + 1 });
                 }
             }
         }
@@ -46,12 +47,12 @@ namespace finalClient.Logic
             else
             {
                 int nextX = currentX + 1;
-                if (currentY == 3) { PotentialMoves.Add(new Coordinate(nextX, currentY - 1)); }
-                else if (currentY == 0) { PotentialMoves.Add(new Coordinate(nextX, currentY + 1)); }
+                if (currentY == 3) { PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY - 1 }); }
+                else if (currentY == 0) { PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY + 1 }); }
                 else
                 {
-                    PotentialMoves.Add(new Coordinate(nextX, currentY - 1));
-                    PotentialMoves.Add(new Coordinate(nextX, currentY + 1));
+                    PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY - 1 });
+                    PotentialMoves.Add(new Coordinate { X = nextX, Y = currentY + 1 });
                 }
             }
         }

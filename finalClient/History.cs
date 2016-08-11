@@ -14,18 +14,19 @@ namespace finalClient
     public partial class History : Form
     {
         private BindingSource TblBindingSource = new BindingSource();
+        private GameBoard gameBoard;
 
-        public History(int userId, string userName)
+
+        public void InitHistoryParams(int userId, string userName, GameBoard gameBoard)
         {
             InitializeComponent();
             UserID = userId;
             UserName = userName;
-        //    MoveList = new List<Move>();
+            this.gameBoard = gameBoard;
         }
 
         public int UserID { get; set;}
         public String UserName { get; set; }
-    //    public List<Move> MoveList { get; set; }
 
         private void btnExit_Click(object sender, EventArgs e)
         {
@@ -35,7 +36,7 @@ namespace finalClient
         private void History_Load(object sender, EventArgs e)
         {
             pictureBoxHistory.Image = Util.resizeImage(Properties.Resources.history, 173, 245);
-            historyGridView.DataSource = "";
+            historyGridView.DataSource = TblBindingSource;
         }
 
         private void btnMoves_Click(object sender, EventArgs e)

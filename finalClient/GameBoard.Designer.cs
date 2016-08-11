@@ -44,12 +44,10 @@
             this.pnlBlack = new System.Windows.Forms.Panel();
             this.lblUserName = new System.Windows.Forms.Label();
             this.blackScore = new System.Windows.Forms.Panel();
+            this.btnPause = new System.Windows.Forms.Button();
             this.btnHistory = new System.Windows.Forms.Button();
             this.btnComputer = new System.Windows.Forms.Button();
             this.btnFriend = new System.Windows.Forms.Button();
-            this.btnPasue = new System.Windows.Forms.Button();
-            this.btnUndo = new System.Windows.Forms.Button();
-            this.bthPlay = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -236,17 +234,28 @@
             // 
             this.blackScore.BackColor = System.Drawing.Color.Transparent;
             this.blackScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.blackScore.Controls.Add(this.btnPause);
             this.blackScore.Controls.Add(this.btnHistory);
             this.blackScore.Controls.Add(this.btnComputer);
             this.blackScore.Controls.Add(this.btnFriend);
-            this.blackScore.Controls.Add(this.btnPasue);
-            this.blackScore.Controls.Add(this.btnUndo);
-            this.blackScore.Controls.Add(this.bthPlay);
             this.blackScore.Controls.Add(this.lblUserName);
             this.blackScore.Location = new System.Drawing.Point(456, 258);
             this.blackScore.Name = "blackScore";
             this.blackScore.Size = new System.Drawing.Size(312, 292);
             this.blackScore.TabIndex = 2;
+            // 
+            // btnPause
+            // 
+            this.btnPause.BackColor = System.Drawing.Color.Yellow;
+            this.btnPause.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPause.Location = new System.Drawing.Point(31, 235);
+            this.btnPause.Name = "btnPause";
+            this.btnPause.Size = new System.Drawing.Size(247, 35);
+            this.btnPause.TabIndex = 8;
+            this.btnPause.Text = "Pause";
+            this.btnPause.UseVisualStyleBackColor = false;
+            this.btnPause.Click += new System.EventHandler(this.btnPause_Click);
             // 
             // btnHistory
             // 
@@ -277,6 +286,7 @@
             // btnFriend
             // 
             this.btnFriend.BackColor = System.Drawing.Color.Yellow;
+            this.btnFriend.Enabled = false;
             this.btnFriend.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFriend.Location = new System.Drawing.Point(33, 77);
@@ -286,48 +296,6 @@
             this.btnFriend.Text = "Start Vs. Friend";
             this.btnFriend.UseVisualStyleBackColor = false;
             this.btnFriend.Click += new System.EventHandler(this.btnFriend_Click);
-            // 
-            // btnPasue
-            // 
-            this.btnPasue.BackColor = System.Drawing.Color.Transparent;
-            this.btnPasue.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnPasue.FlatAppearance.BorderSize = 0;
-            this.btnPasue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPasue.ForeColor = System.Drawing.Color.Transparent;
-            this.btnPasue.Location = new System.Drawing.Point(256, 239);
-            this.btnPasue.Name = "btnPasue";
-            this.btnPasue.Size = new System.Drawing.Size(35, 35);
-            this.btnPasue.TabIndex = 4;
-            this.btnPasue.UseVisualStyleBackColor = false;
-            this.btnPasue.Click += new System.EventHandler(this.btnPasue_Click);
-            // 
-            // btnUndo
-            // 
-            this.btnUndo.BackColor = System.Drawing.Color.Transparent;
-            this.btnUndo.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnUndo.FlatAppearance.BorderSize = 0;
-            this.btnUndo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUndo.ForeColor = System.Drawing.Color.Transparent;
-            this.btnUndo.Location = new System.Drawing.Point(135, 239);
-            this.btnUndo.Name = "btnUndo";
-            this.btnUndo.Size = new System.Drawing.Size(35, 35);
-            this.btnUndo.TabIndex = 2;
-            this.btnUndo.UseVisualStyleBackColor = false;
-            this.btnUndo.Click += new System.EventHandler(this.btnUndo_Click);
-            // 
-            // bthPlay
-            // 
-            this.bthPlay.BackColor = System.Drawing.Color.Transparent;
-            this.bthPlay.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.bthPlay.FlatAppearance.BorderSize = 0;
-            this.bthPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.bthPlay.ForeColor = System.Drawing.Color.Transparent;
-            this.bthPlay.Location = new System.Drawing.Point(30, 239);
-            this.bthPlay.Name = "bthPlay";
-            this.bthPlay.Size = new System.Drawing.Size(35, 35);
-            this.bthPlay.TabIndex = 1;
-            this.bthPlay.UseVisualStyleBackColor = false;
-            this.bthPlay.Click += new System.EventHandler(this.bthPlay_Click);
             // 
             // menuStrip1
             // 
@@ -473,12 +441,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblWhiteScore;
         private System.Windows.Forms.Label lblBlackScore;
-        private System.Windows.Forms.Button bthPlay;
-        private System.Windows.Forms.Button btnPasue;
-        private System.Windows.Forms.Button btnUndo;
         private System.Windows.Forms.Button btnFriend;
         private System.Windows.Forms.Button btnHistory;
         private System.Windows.Forms.Button btnComputer;
         private System.Windows.Forms.PictureBox pictureBoxTurn;
+        private System.Windows.Forms.Button btnPause;
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using finalClient.CheckersService;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace finalClient
 
             public DataCellInfo(int row, int col, Color backColor)
             {
-                CoordinateCell = new Coordinate(row, col);
+                CoordinateCell = new Coordinate { X = row, Y = col };
                 BackColor = backColor;
                 IsFill = false;
             }
