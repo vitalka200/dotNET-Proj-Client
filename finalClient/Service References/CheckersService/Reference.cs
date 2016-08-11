@@ -529,7 +529,7 @@ namespace finalClient.CheckersService {
         void StartGameCallback(finalClient.CheckersService.Game game, finalClient.CheckersService.Status status);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IDuplexCheckersService/PlayerTurnCallback")]
-        void PlayerTurnCallback();
+        void PlayerTurnCallback(finalClient.CheckersService.Move lastRivalMove);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

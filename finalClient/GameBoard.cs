@@ -26,10 +26,11 @@ namespace finalClient
         private CheckerView[] checkers = new CheckerView[8];
         private PotentialSteps lastMoves = new PotentialSteps();
 
-        public Game activeGame { get; set; }
-        public ISoapCheckersService SoapService { get; private set; }
+        public Game ActiveGame { get; set; }
+        public Player ActivePlayer { get; set; }
+        public ISoapCheckersService SoapService { get; set; }
         public DuplexCheckersServiceClient DuplexService { get; set; }
-        public Login Login;
+        public Login Login { get; set; }
 
         public bool turn { get; set; }
         private bool isGameOver = false;
@@ -56,6 +57,17 @@ namespace finalClient
         {
             this.userId = player.Id;
             lblUserName.Text = player.Name;
+            this.ActivePlayer = player;
+        }
+
+        internal void updateMoves(Move lastMove)
+        {
+            updateTurnPanel(false);
+            CheckerView cv = getCheckerByCoordinate(lastMove.From.X, lastMove.From.Y);
+            if(cv.CheckerColor == Color.Black) { makeBlackMove(lastMove.From.X, lastMove.From.Y); }
+            else { makeWhiteMove(lastMove.From.X, lastMove.From.Y); }
+            updateTurnPanel(true);
+            gameDataView.Enabled = true;
         }
 
         private void GameBoard_Load(object sender, EventArgs e)
@@ -63,16 +75,17 @@ namespace finalClient
             this.BackgroundImage = Properties.Resources.back;
             LoadImageView();
             InitializeBoardGame();
-            FirstCheakersConfig();
+            //FirstCheakersConfig();
             gameDataView.Enabled = false;
         }
 
         public Move CreateMoveWrapper(Coordinate from, Coordinate to)
         {
-            return new CheckersService.Move();
+            Move move = new Move() { From = from, To = to, DateTime = DateTime.Now, GameId = ActiveGame.Id, PlayerId = userId  };
+            return move;
         }
 
-        private void FirstCheakersConfig()
+        public void FirstCheakersConfig()
         {
             cellHeight = gameDataView.Rows[0].Height;
             cellWidth = gameDataView.Columns[0].Width;
@@ -136,7 +149,7 @@ namespace finalClient
             data[7, 2].IsFill = true;
 
             // Make sure that initial steps sent only once per player
-            if (activeGame.Player1.Id == userId)
+            if (ActiveGame.Player1.Id == userId)
             {
                 DuplexService.SaveInitialPositions(initialMoves.ToArray(), Status.GAME_STARTED);
             }
@@ -188,13 +201,13 @@ namespace finalClient
             data[1, 2].IsFill = true;
 
             // Make sure that initial steps sent only once per player
-            if (activeGame.Player2.Id == userId)
+            if (ActiveGame.Player2.Id == userId)
             {
                 DuplexService.SaveInitialPositions(initialMoves.ToArray(), Status.GAME_STARTED);
             }
         }
 
-        private void updateTurnPanel()
+        private void updateTurnPanel(bool turn)
         {
             if(turn) { pictureBoxTurn.Image = Util.resizeImage(blackChaker, 100, 100); }
             else { pictureBoxTurn.Image = Util.resizeImage(whiteChecker, 100, 100); }
@@ -289,8 +302,18 @@ namespace finalClient
                 {
                     if (step != null) { gameDataView.Rows[step.X].Cells[step.Y].Style.BackColor = Color.Black; }
                 }
+                Move move = new Move
+                {
+                    GameId = ActiveGame.Id,
+                    PlayerId = userId,
+                    DateTime = DateTime.Now,
+                    From = lastMoves.Cheaker.CoordinateOldPosiotin,
+                    To = lastMoves.Cheaker.CoordinatePosition
+                };
+                DuplexService.MakeMove(move);
             }
             gameDataView.ClearSelection();
+            gameDataView.Enabled = false;
         }
 
         private void makeWhiteMove(int row, int col)
@@ -323,19 +346,6 @@ namespace finalClient
                 cv.Dispose();
                 lblBlackScore.Text = (Int32.Parse(lblBlackScore.Text) + 1).ToString();
             }
-
-            turn = true;
-            updateTurnPanel();
-            gameDataView.Enabled = true;
-
-            Move move = new Move {
-                GameId = activeGame.Id,
-                PlayerId = rivalId,
-                DateTime = DateTime.Now,
-                From = lastMoves.Cheaker.CoordinateOldPosiotin,
-                To = lastMoves.Cheaker.CoordinatePosition
-            };
-            DuplexService.MakeMove(move);
         }
 
         private void makeBlackMove(int row, int col)
@@ -375,19 +385,6 @@ namespace finalClient
                 lblWhiteScore.Text = (Int32.Parse(lblWhiteScore.Text) + 1).ToString();
             }
 
-            turn = false;
-            updateTurnPanel();
-            gameDataView.Enabled = false;
-
-            Move move = new Move {
-                GameId = activeGame.Id,
-                PlayerId = userId,
-                DateTime = DateTime.Now,
-                From = lastMoves.Cheaker.CoordinateOldPosiotin,
-                To = lastMoves.Cheaker.CoordinatePosition
-            };
-            DuplexService.MakeMove(move);
-
         }
 
         private CheckerView getCheckerByCoordinate(int row, int col)
@@ -411,23 +408,22 @@ namespace finalClient
 
         private void btnFriend_Click(object sender, EventArgs e)
         {
-            //activeGame = new Game(server.getGameId(), DateTime.Now, userId, rivalId);
+            //ActiveGame = new Game(server.getGameId(), DateTime.Now, userId, rivalId);
             GameChooser gameChooser = new GameChooser(this);
-
             gameChooser.Show();
-            Login.ServiceCallBackHandler.GameChooser = gameChooser;
 
-            DuplexService.StartGame(activeGame, false);
-            turn = true;
+
+            //DuplexService.StartGame(ActiveGame, false);
+            //turn = true;
             gameDataView.Enabled = true;
         }
 
         private void btnComputer_Click(object sender, EventArgs e)
         {
-            //  activeGame = new Game(server.getGameId(), DateTime.Now, userId, 0);
+            //  ActiveGame = new Game(server.getGameId(), DateTime.Now, userId, 0);
             //call back with service with rival id which is 0  -> saved to game aginst computer
-            turn = true;
-            DuplexService.StartGame(activeGame, true);
+            //turn = true;
+            DuplexService.StartGame(ActiveGame, true);
             gameDataView.Enabled = true;
         }
 
@@ -448,10 +444,10 @@ namespace finalClient
 
      /*   private void btnUndo_Click(object sender, EventArgs e)
         {
-            if(activeGame.GameMoves.Count == 0) { MessageBox.Show("Cannot preform Undo step"); }
+            if(ActiveGame.GameMoves.Count == 0) { MessageBox.Show("Cannot preform Undo step"); }
             else
             {
-                Move lastMove = activeGame.GameMoves.Last();
+                Move lastMove = ActiveGame.GameMoves.Last();
                 CheckerView cv = getCheckerByID(lastMove.CheckerID);
                 if (!(cv.CoordinateOldPosiotin.Equals(new Coordinate(-1, -1))))
                 {
@@ -470,7 +466,7 @@ namespace finalClient
                     cv.CoordinatePosition = cv.CoordinateOldPosiotin;
                     cv.CoordinateOldPosiotin = new Coordinate(-1, -1);
                     cv.Parent = gameDataView;
-                    activeGame.GameMoves.Remove(lastMove);
+                    ActiveGame.GameMoves.Remove(lastMove);
 
                 }
             }

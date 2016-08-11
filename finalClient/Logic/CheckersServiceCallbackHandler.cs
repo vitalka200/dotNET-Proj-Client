@@ -13,7 +13,6 @@ namespace finalClient.Logic
     {
         public GameBoard GameBoard;
         public Login Login;
-        public GameChooser GameChooser;
         public History History;
 
         public void LoginCallback(Player player, Game[] playerGames, Status status)
@@ -23,7 +22,6 @@ namespace finalClient.Logic
                 GameBoard.SetPlayer(player);
                 if (playerGames != null && playerGames.Length > 0)
                 {
-                    GameChooser.PlayerGames = playerGames.ToList();
                     GameBoard.AllowSecondPlayerGame();
                 }
                 else
@@ -42,28 +40,30 @@ namespace finalClient.Logic
 
         public void MakeMoveCallback(Status status)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
-        public void MakeMoveCallback(Move[] availableMoves, Status status)
+        public void PlayerTurnCallback(Move lastMove)
         {
-            throw new NotImplementedException();
-        }
+            if (lastMove == null)
+            { return; }
 
-        public void PlayerTurnCallback()
-        {
-            throw new NotImplementedException();
+            if (lastMove.From.X != -1) // Not the initial move
+            {
+                GameBoard.updateMoves(lastMove);
+            }
         }
 
         public void StartGameCallback(Game game, Status status)
         {
             if (Status.GAME_STARTED == status)
             {
-
+                GameBoard.ActiveGame = game;
+                GameBoard.FirstCheakersConfig();
             }
             else
             {
-                MessageBox.Show("{}", status.ToString());
+                MessageBox.Show(status.ToString(), status.ToString());
             }
         }
     }

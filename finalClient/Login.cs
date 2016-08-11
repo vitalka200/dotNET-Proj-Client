@@ -21,7 +21,6 @@ namespace finalClient
 
         private GameBoard gameBoard = new GameBoard();
         private History history = new History();
-        private GameChooser gameChoser = new GameChooser();
 
         public Login()
         {
@@ -29,15 +28,16 @@ namespace finalClient
             SoapService = new SoapCheckersServiceClient();
             ServiceCallBackHandler = new CheckersServiceCallbackHandler();
 
+
             ServiceCallBackHandler.Login = this;
             ServiceCallBackHandler.History = history;
-            ServiceCallBackHandler.GameChooser = gameChoser;
             ServiceCallBackHandler.GameBoard = gameBoard;
 
             DuplexService = new DuplexCheckersServiceClient(new System.ServiceModel.InstanceContext(ServiceCallBackHandler));
 
             gameBoard.Login = this;
             gameBoard.DuplexService = DuplexService;
+            gameBoard.SoapService = SoapService;
         }
 
         private void loginBtn_Click(object sender, EventArgs e)
