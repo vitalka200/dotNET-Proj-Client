@@ -66,5 +66,10 @@ namespace finalClient.Logic
                 MessageBox.Show(status.ToString(), status.ToString());
             }
         }
+
+        public void GameEnd(Move lastRivalMove, Status status)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -197,6 +197,26 @@ namespace finalClient.CheckersService {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Coordinate)
+            {
+                Coordinate other = (Coordinate)obj;
+                return (X == other.X && Y == other.Y);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return X.GetHashCode() & Y.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("({0,3}, {1,3})", X, Y);
+        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -530,6 +550,9 @@ namespace finalClient.CheckersService {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IDuplexCheckersService/PlayerTurnCallback")]
         void PlayerTurnCallback(finalClient.CheckersService.Move lastRivalMove);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IDuplexCheckersService/GameEnd")]
+        void GameEnd(finalClient.CheckersService.Move lastRivalMove, finalClient.CheckersService.Status status);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

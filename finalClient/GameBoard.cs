@@ -423,7 +423,7 @@ namespace finalClient
             //  ActiveGame = new Game(server.getGameId(), DateTime.Now, userId, 0);
             //call back with service with rival id which is 0  -> saved to game aginst computer
             //turn = true;
-            DuplexService.StartGame(ActiveGame, true);
+            DuplexService.StartGame(new Game { Player1 = ActivePlayer, CreatedDateTime = DateTime.Now }, true);
             gameDataView.Enabled = true;
         }
 
