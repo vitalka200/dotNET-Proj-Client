@@ -13,9 +13,8 @@ namespace finalClient
         const int ROW_HEIGTH = 61;
         const int NUMBER_OF_ROWS = 8;
         const int NUMBER_OF_COLS = 4;
-
-        private int userId;
-        private int rivalId = -1;
+        
+        public int RivalId { get; set; }
 
         private int cellWidth;
         private int cellHeight;
@@ -55,18 +54,18 @@ namespace finalClient
 
         public void SetPlayer(Player player)
         {
-            this.userId = player.Id;
             lblUserName.Text = player.Name;
             this.ActivePlayer = player;
         }
 
         internal void updateMoves(Move lastMove)
         {
-            updateTurnPanel(false);
-            CheckerView cv = getCheckerByCoordinate(lastMove.From.X, lastMove.From.Y);
-            if(cv.CheckerColor == Color.Black) { makeBlackMove(lastMove.From.X, lastMove.From.Y); }
-            else { makeWhiteMove(lastMove.From.X, lastMove.From.Y); }
             updateTurnPanel(true);
+            CheckerView cv = getCheckerByCoordinate(lastMove.From.X, lastMove.From.Y);
+            lastMoves.Cheaker = cv;
+            if(cv.CheckerColor == Color.Black) { makeBlackMove(lastMove.To.X, lastMove.To.Y); }
+            else { makeWhiteMove(lastMove.To.X, lastMove.To.Y); }
+            updateTurnPanel(false);
             gameDataView.Enabled = true;
         }
 
@@ -81,12 +80,13 @@ namespace finalClient
 
         public Move CreateMoveWrapper(Coordinate from, Coordinate to)
         {
-            Move move = new Move() { From = from, To = to, DateTime = DateTime.Now, GameId = ActiveGame.Id, PlayerId = userId  };
+            Move move = new Move() { From = from, To = to, DateTime = DateTime.Now, GameId = ActiveGame.Id, PlayerId = ActivePlayer.Id  };
             return move;
         }
 
         public void FirstCheakersConfig()
         {
+            RivalId = ActivePlayer.Id == ActiveGame.Player1.Id ? ActiveGame.Player2.Id : ActiveGame.Player2.Id;
             cellHeight = gameDataView.Rows[0].Height;
             cellWidth = gameDataView.Columns[0].Width;
             checkerHeight = (int)(cellHeight * 0.7);
@@ -99,16 +99,22 @@ namespace finalClient
             foreach(CheckerView cv in checkers)
             {
                 cv.Parent = gameDataView;
-                if(cv.CheckerColor == Color.Black) { cv.MouseClick += checker_MouseClick; }
+                cv.MouseClick += checker_MouseClick;
             }
+        }
+
+        public void GridViewEnableFlag(bool flag)
+        {
+            gameDataView.Enabled = flag;
         }
 
         private void LoadBlackCheakers(Point point)
         {
+            int playerId = ActivePlayer.Id == ActiveGame.Player1.Id ? ActiveGame.Player1.Id : ActiveGame.Player2.Id;
             List<Move> initialMoves = new List<Move>();
             Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 6, Y = 1 });
-            checkers[4] = new CheckerView(5, 
-                                         userId, checkerHeight, checkerWidth,
+            checkers[4] = new CheckerView(5,
+                                         playerId, checkerHeight, checkerWidth,
                                          move.To,
                                          move.From, 
                                          Color.Black, blackChaker, point);
@@ -119,7 +125,7 @@ namespace finalClient
 
             move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 6, Y = 3 });
             checkers[5] = new CheckerView(6,
-                                         userId, checkerHeight, checkerWidth,
+                                         playerId, checkerHeight, checkerWidth,
                                          move.To,
                                          move.From,
                                          Color.Black, blackChaker, point);
@@ -130,8 +136,8 @@ namespace finalClient
             point.X = (int)((cellWidth / 2 - cellWidth / 2) + (cellWidth * 0.15));
 
             move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 7, Y = 0 });
-            checkers[6] = new CheckerView(7, 
-                                          userId, checkerHeight, checkerWidth,
+            checkers[6] = new CheckerView(7,
+                                          playerId, checkerHeight, checkerWidth,
                                           move.To,
                                           move.From,
                                           Color.Black, blackChaker, point);
@@ -140,8 +146,8 @@ namespace finalClient
             point.X += cellWidth * 2;
 
             move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 7, Y = 2 });
-            checkers[7] = new CheckerView(8, 
-                                          userId, checkerHeight, checkerWidth,
+            checkers[7] = new CheckerView(8,
+                                          playerId, checkerHeight, checkerWidth,
                                           move.To,
                                           move.From, 
                                           Color.Black, blackChaker, point);
@@ -149,7 +155,7 @@ namespace finalClient
             data[7, 2].IsFill = true;
 
             // Make sure that initial steps sent only once per player
-            if (ActiveGame.Player1.Id == userId)
+            if (ActiveGame.Player1.Id == ActivePlayer.Id)
             {
                 DuplexService.SaveInitialPositions(initialMoves.ToArray(), Status.GAME_STARTED);
             }
@@ -157,10 +163,12 @@ namespace finalClient
 
         private void LoadWhiteCheakers(Point point)
         {
+            int playerId = ActivePlayer.Id == ActiveGame.Player2.Id ? ActiveGame.Player2.Id : ActiveGame.Player1.Id;
+
             List<Move> initialMoves = new List<Move>();
             Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 0, Y = 1 });
             checkers[0] = new CheckerView(1,
-                                          rivalId, checkerHeight, checkerWidth,
+                                          playerId, checkerHeight, checkerWidth,
                                           move.To, 
                                           move.From,
                                           Color.White, whiteChecker, point);
@@ -170,7 +178,7 @@ namespace finalClient
 
             move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 0, Y = 3 });
             checkers[1] = new CheckerView(2,
-                                          rivalId, checkerHeight, checkerWidth,
+                                          playerId, checkerHeight, checkerWidth,
                                           move.To,
                                           move.From, 
                                           Color.White, whiteChecker, point);
@@ -183,7 +191,7 @@ namespace finalClient
 
             move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 1, Y = 0 });
             checkers[2] = new CheckerView(3,
-                                         rivalId, checkerHeight, checkerWidth, 
+                                         playerId, checkerHeight, checkerWidth, 
                                          move.To,
                                          move.From, 
                                          Color.White, whiteChecker, point);
@@ -192,8 +200,8 @@ namespace finalClient
             point.X += cellWidth * 2;
 
             move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 1, Y = 2 });
-            checkers[3] = new CheckerView(4, 
-                                         rivalId, checkerHeight, checkerWidth,
+            checkers[3] = new CheckerView(4,
+                                         playerId, checkerHeight, checkerWidth,
                                          move.To,
                                          move.From,
                                          Color.White, whiteChecker, point);
@@ -201,13 +209,13 @@ namespace finalClient
             data[1, 2].IsFill = true;
 
             // Make sure that initial steps sent only once per player
-            if (ActiveGame.Player2.Id == userId)
+            if (ActiveGame.Player2.Id == ActivePlayer.Id)
             {
                 DuplexService.SaveInitialPositions(initialMoves.ToArray(), Status.GAME_STARTED);
             }
         }
 
-        private void updateTurnPanel(bool turn)
+        public void updateTurnPanel(bool turn)
         {
             if(turn) { pictureBoxTurn.Image = Util.resizeImage(blackChaker, 100, 100); }
             else { pictureBoxTurn.Image = Util.resizeImage(whiteChecker, 100, 100); }
@@ -226,7 +234,7 @@ namespace finalClient
 
             if (data[cv.CoordinatePosition.X, cv.CoordinatePosition.Y].BackColor != Color.White)
             {
-                if ((userId == cv.UserID))
+                if ((ActivePlayer.Id == cv.UserID))
                 { 
                     if (cv.CheckerColor == Color.Black) { lastMoves.GetPotentialStepBlackCheakers(cv.CoordinatePosition.X, cv.CoordinatePosition.Y); }
                     else { lastMoves.GetPotentialStepWhiteCheakers(cv.CoordinatePosition.X, cv.CoordinatePosition.Y); }
@@ -293,7 +301,7 @@ namespace finalClient
         private void gameDataView_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             //If cheaker has choosen and the cekk that choosed is an option for this cheaker than start animation for moving checker
-            if ((lastMoves.Cheaker != null) && (userId == lastMoves.Cheaker.UserID) && (
+            if ((lastMoves.Cheaker != null) && (ActivePlayer.Id == lastMoves.Cheaker.UserID) && (
                 lastMoves.IsStepExist(new Coordinate { X = e.RowIndex, Y = e.ColumnIndex })))
             {
                 if (lastMoves.Cheaker.CheckerColor == Color.Black) { makeBlackMove(e.RowIndex, e.ColumnIndex); }
@@ -305,15 +313,15 @@ namespace finalClient
                 Move move = new Move
                 {
                     GameId = ActiveGame.Id,
-                    PlayerId = userId,
+                    PlayerId = ActivePlayer.Id,
                     DateTime = DateTime.Now,
                     From = lastMoves.Cheaker.CoordinateOldPosiotin,
                     To = lastMoves.Cheaker.CoordinatePosition
                 };
                 DuplexService.MakeMove(move);
+                gameDataView.ClearSelection();
+                gameDataView.Enabled = false;
             }
-            gameDataView.ClearSelection();
-            gameDataView.Enabled = false;
         }
 
         private void makeWhiteMove(int row, int col)
@@ -415,7 +423,7 @@ namespace finalClient
 
             //DuplexService.StartGame(ActiveGame, false);
             //turn = true;
-            gameDataView.Enabled = true;
+            //gameDataView.Enabled = true;
         }
 
         private void btnComputer_Click(object sender, EventArgs e)
@@ -431,7 +439,7 @@ namespace finalClient
         {
             gameDataView.Enabled = false;
             History historyWin = new History();
-            historyWin.InitHistoryParams(userId, lblUserName.Text, this);
+            historyWin.InitHistoryParams(ActivePlayer.Id, lblUserName.Text, this);
             historyWin.StartPosition = FormStartPosition.CenterParent;
             Login.ServiceCallBackHandler.History = historyWin;
             historyWin.Show();
@@ -487,7 +495,7 @@ namespace finalClient
             } else { InitNewGame(); }
         }
 
-        private void InitNewGame()
+        public void InitNewGame()
         {
             foreach (CheckerView cv in checkers) { cv.Dispose(); }
             data = new DataCellInfo[NUMBER_OF_ROWS, NUMBER_OF_COLS];

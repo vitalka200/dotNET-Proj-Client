@@ -52,6 +52,7 @@ namespace finalClient.Logic
             {
                 GameBoard.updateMoves(lastMove);
             }
+            GameBoard.GridViewEnableFlag(true);
         }
 
         public void StartGameCallback(Game game, Status status)
@@ -60,6 +61,14 @@ namespace finalClient.Logic
             {
                 GameBoard.ActiveGame = game;
                 GameBoard.FirstCheakersConfig();
+                if (GameBoard.ActivePlayer.Id == game.Player1.Id) // we black
+                {
+                    GameBoard.updateTurnPanel(true);
+                }
+                else // we white
+                {
+                    GameBoard.updateTurnPanel(false);
+                }
             }
             else
             {
@@ -69,7 +78,9 @@ namespace finalClient.Logic
 
         public void GameEnd(Move lastRivalMove, Status status)
         {
-            throw new NotImplementedException();
+
+            MessageBox.Show(status.ToString(), status.ToString());
+            GameBoard.InitNewGame();
         }
     }
 }
