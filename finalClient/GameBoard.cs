@@ -105,7 +105,7 @@ namespace finalClient
             foreach(CheckerView cv in checkers)
             {
                 cv.Parent = gameDataView;
-                cv.MouseClick += checker_MouseClick;
+                if (cv.UserID == ActivePlayer.Id) { cv.MouseClick += checker_MouseClick; }
             }
         }
 
@@ -229,8 +229,10 @@ namespace finalClient
 
         private void checker_MouseClick(object sender, MouseEventArgs e)
         {
-            
+            List<Coordinate> stepsToRemove = new List<Coordinate>();
+            List<Coordinate> stepsToAdd = new List<Coordinate>();
             CheckerView cv = (CheckerView)sender;
+            CheckerView rivalChecker = null;
 
             if (lastMoves != null)
             {
@@ -250,15 +252,39 @@ namespace finalClient
                         {
                             if ((step != null) && (step.X >= 0) && (step.Y >= 0) && (step.X <= 7) && (step.Y <= 3))
                             {
-                                if ((!data[step.X, step.Y].IsFill) || ((data[step.X, step.Y].IsFill) &&
-                                    ((getCheckerByCoordinate(step.X, step.Y)).CheckerColor != cv.CheckerColor)))
+                                if ((!data[step.X, step.Y].IsFill)) { gameDataView.Rows[step.X].Cells[step.Y].Style.BackColor = Color.Green; }
+                                else
                                 {
-                                    gameDataView.Rows[step.X].Cells[step.Y].Style.BackColor = Color.Green;
+                                    Coordinate newStepToEatRival = new Coordinate { X = step.X, Y = step.Y };
+                                    rivalChecker = getCheckerByCoordinate(step.X, step.Y);
+                                    if (rivalChecker.CheckerColor != cv.CheckerColor)
+                                    {
+                                        if (rivalChecker.CheckerColor == Color.White)
+                                        {
+                                            newStepToEatRival.X -= 1;
+                                            if (newStepToEatRival.Y > cv.CoordinatePosition.Y) { newStepToEatRival.Y += 1; }
+                                            else { newStepToEatRival.Y -= 1; }
+                                            if (newStepToEatRival.X >= 0 && newStepToEatRival.Y >= 0 && newStepToEatRival.Y <= 3) { gameDataView.Rows[newStepToEatRival.X].Cells[newStepToEatRival.Y].Style.BackColor = Color.Green; }
+                                            else { stepsToRemove.Add(newStepToEatRival); }
+                                        }
+                                        else
+                                        {
+                                            newStepToEatRival.X += 1;
+                                            if (newStepToEatRival.Y > cv.CoordinatePosition.Y) { newStepToEatRival.Y += 1; }
+                                            else { newStepToEatRival.Y -= 1; }
+                                            if (newStepToEatRival.X <= 7 && newStepToEatRival.Y >= 0 && newStepToEatRival.Y <= 3) { gameDataView.Rows[newStepToEatRival.X].Cells[newStepToEatRival.Y].Style.BackColor = Color.Green; }
+                                            else { stepsToRemove.Add(newStepToEatRival); }
+                                        }
+                                    }
+                                    stepsToRemove.Add(step);
+                                    stepsToAdd.Add(newStepToEatRival);
                                 }
                             }
                         }
                     }
                     lastMoves.Cheaker = cv;
+                    foreach (Coordinate step in stepsToAdd) { lastMoves.PotentialMoves.Add(step); }
+                    foreach (Coordinate step in stepsToRemove) { lastMoves.PotentialMoves.Remove(step); }
                 }
             }
         }
@@ -332,24 +358,37 @@ namespace finalClient
         private void makeWhiteMove(int row, int col)
         {
             CheckerView cvMayEat = null;
+            bool flagEatRivalChecker = false;
+            if(lastMoves.Cheaker.CoordinatePosition.X + 2 == row)
+            {
+                flagEatRivalChecker = true;
+                int eatenRivalCheckerX = row - 1;
+                int eatenRivalCheckerY = 0;
+                if(col < lastMoves.Cheaker.CoordinatePosition.Y) { eatenRivalCheckerY = col + 1; }
+                else { eatenRivalCheckerY = col - 1; }
+                cvMayEat = getCheckerByCoordinate(eatenRivalCheckerX, eatenRivalCheckerY);
+            }
             lastMoves.Cheaker.CoordinateOldPosiotin = lastMoves.Cheaker.CoordinatePosition;
             data[lastMoves.Cheaker.CoordinatePosition.X, lastMoves.Cheaker.CoordinatePosition.Y].IsFill = false;
             int x = lastMoves.Cheaker.Location.X;
             int y = lastMoves.Cheaker.Location.Y;
             //Check is any checker exist in new place
-            if ((data[row, col].IsFill)) { cvMayEat = getCheckerByCoordinate(row, col); }
+            //if ((data[row, col].IsFill)) { cvMayEat = getCheckerByCoordinate(row, col); }
             //If checker exist in new place ==> check if his color is black and eat
-            if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor))
+            //if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor))
+            if(flagEatRivalChecker)
             {
-                row = lastMoves.Cheaker.CoordinateOldPosiotin.X + 2;
-                if(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
-                else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
-                if(row <= 7 && col >= 0 && col <= 3 && !data[row, col].IsFill)
-                {
-                    if (lastMoves.Cheaker.CoordinatePosition.Y < col ) { x += 2 * cellWidth; }
+                data[cvMayEat.CoordinatePosition.X, cvMayEat.CoordinatePosition.Y].IsFill = false;
+                //row = lastMoves.Cheaker.CoordinateOldPosiotin.X + 2;
+                //if(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
+                //else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
+                //if(row <= 7 && col >= 0 && col <= 3 && !data[row, col].IsFill)
+                //{
+
+                if (lastMoves.Cheaker.CoordinatePosition.Y < col ) { x += 2 * cellWidth; }
                     else { x -= 2 * cellWidth; }
                     y += cellHeight * 2;
-                }
+               // }
             }
             else
             {
@@ -359,7 +398,8 @@ namespace finalClient
             }
             if(row <= 7 && col >= 0 && col <= 3 )
             {
-                if (row == 7) { lastMoves.Cheaker.Image = (Image)new Bitmap(whiteCheckerKing, checkerWidth, checkerHeight); }
+                if(row == 7) { lastMoves.Cheaker.Image = (Image)new Bitmap(whiteCheckerKing, checkerWidth, checkerHeight); }
+                if (row == 7 && ActivePlayer.Id == ActiveGame.Player2.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
                 lastMoves.Cheaker.Location = new Point(x, y);
                 lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
                 data[row, col].IsFill = true;
@@ -375,24 +415,36 @@ namespace finalClient
         private void makeBlackMove(int row, int col)
         {
             CheckerView cvMayEat = null;
+            bool flagEatRivalChecker = false;
+            if(lastMoves.Cheaker.CoordinatePosition.X - 2 == row)
+            {
+                flagEatRivalChecker = true;
+                int eatenRivalChekerX = row + 1;
+                int eatenRivalChekerY = 0;
+                if (col > lastMoves.Cheaker.CoordinatePosition.Y) { eatenRivalChekerY = col - 1; }
+                else { eatenRivalChekerY = col + 1; }
+                cvMayEat = getCheckerByCoordinate(eatenRivalChekerX, eatenRivalChekerY);
+            }
             lastMoves.Cheaker.CoordinateOldPosiotin = lastMoves.Cheaker.CoordinatePosition;
             data[lastMoves.Cheaker.CoordinatePosition.X, lastMoves.Cheaker.CoordinatePosition.Y].IsFill = false;
             int x = lastMoves.Cheaker.Location.X;
             int y = lastMoves.Cheaker.Location.Y;
             //Check is any checker exist in new place
-            if ((data[row, col].IsFill)) { cvMayEat = getCheckerByCoordinate(row, col); }
+           // if ((data[row, col].IsFill) && flagEatRivalChecker) { cvMayEat = getCheckerByCoordinate(row, col); }
             //If checker exist in new place ==> check if his color is black and eat
-            if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor))
+           // if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor) && flagEatRivalChecker)
+            if(flagEatRivalChecker)
             {
-                row = lastMoves.Cheaker.CoordinatePosition.X - 2;
-                if(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
-                else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
-                if(row >=0 && col >= 0 && col <= 3 && !data[row, col].IsFill)
-                {
-                    if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += 2 * cellWidth; }
+                //row = lastMoves.Cheaker.CoordinatePosition.X - 2;
+                //f(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
+                //else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
+                //if(row >=0 && col >= 0 && col <= 3 && !data[row, col].IsFill)
+                // {
+                data[cvMayEat.CoordinatePosition.X, cvMayEat.CoordinatePosition.Y].IsFill = false;
+                if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += 2 * cellWidth; }
                     else { x -= 2* cellWidth; }
                     y -= cellHeight * 2;
-                }
+               // }
             } else
             {
                 if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += cellWidth; }
@@ -403,7 +455,8 @@ namespace finalClient
 
             if(row >= 0 && col >= 0 && col <= 3)
             {
-                if (row == 0) { lastMoves.Cheaker.Image = (Image)new Bitmap(blackChakerKing, checkerWidth, checkerHeight); }
+                if(row == 0) { lastMoves.Cheaker.Image = (Image)new Bitmap(blackChakerKing, checkerWidth, checkerHeight); }
+                if (row == 0 && ActivePlayer.Id == ActiveGame.Player1.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
                 lastMoves.Cheaker.Location = new Point(x, y);
                 lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
                 data[row, col].IsFill = true;

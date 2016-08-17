@@ -65,7 +65,7 @@ namespace finalClient.Logic
                 {
                     GameBoard.updateTurnPanel(true);
                 }
-                else // we white
+                else // we are white
                 {
                     GameBoard.updateTurnPanel(false);
                 }
@@ -78,8 +78,9 @@ namespace finalClient.Logic
 
         public void GameEnd(Move lastRivalMove, Status status)
         {
-            if (Status.GAME_WIN == status) { new WinnerWin(lastRivalMove.PlayerId.ToString()).Show(); }
-            else { new LoserWin(lastRivalMove.PlayerId.ToString()).Show(); }
+            String playerName = GameBoard.ActiveGame.Player1.Id == lastRivalMove.Id ? GameBoard.ActiveGame.Player1.Name : GameBoard.ActiveGame.Player2.Name;
+            if (Status.GAME_WIN == status) { new WinnerWin(playerName).Show(); }
+            else { new LoserWin(playerName).Show(); }
             GameBoard.InitNewGame();
         }
     }
