@@ -197,26 +197,6 @@ namespace finalClient.CheckersService {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
-
-        public override bool Equals(object obj)
-        {
-            if (obj is Coordinate)
-            {
-                Coordinate other = (Coordinate)obj;
-                return (X == other.X && Y == other.Y);
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return X.GetHashCode() & Y.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return string.Format("({0,3}, {1,3})", X, Y);
-        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -232,6 +212,9 @@ namespace finalClient.CheckersService {
         private System.DateTime CreatedDateTimeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private finalClient.CheckersService.Status GameStatusField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -239,6 +222,9 @@ namespace finalClient.CheckersService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private finalClient.CheckersService.Player Player2Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int WinnerPlayerNumField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -259,6 +245,19 @@ namespace finalClient.CheckersService {
                 if ((this.CreatedDateTimeField.Equals(value) != true)) {
                     this.CreatedDateTimeField = value;
                     this.RaisePropertyChanged("CreatedDateTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public finalClient.CheckersService.Status GameStatus {
+            get {
+                return this.GameStatusField;
+            }
+            set {
+                if ((this.GameStatusField.Equals(value) != true)) {
+                    this.GameStatusField = value;
+                    this.RaisePropertyChanged("GameStatus");
                 }
             }
         }
@@ -298,6 +297,19 @@ namespace finalClient.CheckersService {
                 if ((object.ReferenceEquals(this.Player2Field, value) != true)) {
                     this.Player2Field = value;
                     this.RaisePropertyChanged("Player2");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int WinnerPlayerNum {
+            get {
+                return this.WinnerPlayerNumField;
+            }
+            set {
+                if ((this.WinnerPlayerNumField.Equals(value) != true)) {
+                    this.WinnerPlayerNumField = value;
+                    this.RaisePropertyChanged("WinnerPlayerNum");
                 }
             }
         }
@@ -405,6 +417,53 @@ namespace finalClient.CheckersService {
         }
     }
     
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Status", Namespace="http://schemas.datacontract.org/2004/07/")]
+    public enum Status : int {
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        MOVE_ACCEPTED = 0,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GAME_LOSE = 1,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GAME_WIN = 2,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NEW_GAME = 3,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GAME_STARTED = 4,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GAME_COMPLETED = 5,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NO_SUCH_GAME = 6,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        WAITING_FOR_OTHER_PLAYER_TO_ARRIVE = 7,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NOT_ENOUGH_PLAYERS_TO_START_GAME = 8,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        GAME_ALREADY_STARTED_BY_OTHER_PLAYERS = 9,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NOT_LOGGED_IN = 10,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        NO_SUCH_USER = 11,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        WRONG_INPUT = 12,
+        
+        [System.Runtime.Serialization.EnumMemberAttribute()]
+        LOGIN_SUCCEDED = 13,
+    }
+    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Family", Namespace="http://schemas.datacontract.org/2004/07/")]
@@ -464,47 +523,6 @@ namespace finalClient.CheckersService {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Status", Namespace="http://schemas.datacontract.org/2004/07/")]
-    public enum Status : int {
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        MOVE_ACCEPTED = 0,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GAME_LOSE = 1,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GAME_WIN = 2,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GAME_STARTED = 3,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NO_SUCH_GAME = 4,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        WAITING_FOR_OTHER_PLAYER_TO_ARRIVE = 5,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NOT_ENOUGH_PLAYERS_TO_START_GAME = 6,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        GAME_ALREADY_STARTED_BY_OTHER_PLAYERS = 7,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NOT_LOGGED_IN = 8,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        NO_SUCH_USER = 9,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        WRONG_INPUT = 10,
-        
-        [System.Runtime.Serialization.EnumMemberAttribute()]
-        LOGIN_SUCCEDED = 11,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -777,6 +795,12 @@ namespace finalClient.CheckersService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRestCheckersService/GetFamily", ReplyAction="http://tempuri.org/IRestCheckersService/GetFamilyResponse")]
         System.Threading.Tasks.Task<finalClient.CheckersService.Family> GetFamilyAsync(string familyId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRestCheckersService/UpdateFamily", ReplyAction="http://tempuri.org/IRestCheckersService/UpdateFamilyResponse")]
+        bool UpdateFamily(finalClient.CheckersService.Family family);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRestCheckersService/UpdateFamily", ReplyAction="http://tempuri.org/IRestCheckersService/UpdateFamilyResponse")]
+        System.Threading.Tasks.Task<bool> UpdateFamilyAsync(finalClient.CheckersService.Family family);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IRestCheckersService/GetPlayersByFamily", ReplyAction="http://tempuri.org/IRestCheckersService/GetPlayersByFamilyResponse")]
         finalClient.CheckersService.Player[] GetPlayersByFamily(string familyId);
         
@@ -943,6 +967,14 @@ namespace finalClient.CheckersService {
         
         public System.Threading.Tasks.Task<finalClient.CheckersService.Family> GetFamilyAsync(string familyId) {
             return base.Channel.GetFamilyAsync(familyId);
+        }
+        
+        public bool UpdateFamily(finalClient.CheckersService.Family family) {
+            return base.Channel.UpdateFamily(family);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateFamilyAsync(finalClient.CheckersService.Family family) {
+            return base.Channel.UpdateFamilyAsync(family);
         }
         
         public finalClient.CheckersService.Player[] GetPlayersByFamily(string familyId) {
