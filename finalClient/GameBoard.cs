@@ -326,17 +326,25 @@ namespace finalClient
 
         private void makeWhiteMove(int row, int col)
         {
-            CheckerView cv = null;
+            CheckerView cvMayEat = null;
             lastMoves.Cheaker.CoordinateOldPosiotin = lastMoves.Cheaker.CoordinatePosition;
             data[lastMoves.Cheaker.CoordinatePosition.X, lastMoves.Cheaker.CoordinatePosition.Y].IsFill = false;
             int x = lastMoves.Cheaker.Location.X;
             int y = lastMoves.Cheaker.Location.Y;
-            if ((data[row, col].IsFill)) { cv = getCheckerByCoordinate(row, col); }
-            if ((data[row, col].IsFill) && (cv.CheckerColor != lastMoves.Cheaker.CheckerColor))
+            //Check is any checker exist in new place
+            if ((data[row, col].IsFill)) { cvMayEat = getCheckerByCoordinate(row, col); }
+            //If checker exist in new place ==> check if his color is black and eat
+            if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor))
             {
-                if (lastMoves.Cheaker.CoordinatePosition.Y < col ) { x += cellWidth; }
-                else { x -= cellWidth; }
-                y += cellHeight * 2;
+                row = lastMoves.Cheaker.CoordinateOldPosiotin.X + 2;
+                if(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
+                else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
+                if(row <= 7 && col >= 0 && col <= 3 && !data[row, col].IsFill)
+                {
+                    if (lastMoves.Cheaker.CoordinatePosition.Y < col ) { x += 2 * cellWidth; }
+                    else { x -= 2 * cellWidth; }
+                    y += cellHeight * 2;
+                }
             }
             else
             {
@@ -344,55 +352,64 @@ namespace finalClient
                 else { x -= cellWidth; }
                 y += cellHeight;
             }
-            if (row == 7) { lastMoves.Cheaker.Image = (Image)new Bitmap(whiteCheckerKing, checkerWidth, checkerHeight); }
-            lastMoves.Cheaker.Location = new Point(x, y);
-            lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
-            data[row, col].IsFill = true;
-            if(cv != null)
+            if(row <= 7 && col >= 0 && col <= 3 )
             {
-                cv.InGame = false;
-                cv.Dispose();
-                lblBlackScore.Text = (Int32.Parse(lblBlackScore.Text) + 1).ToString();
+                if (row == 7) { lastMoves.Cheaker.Image = (Image)new Bitmap(whiteCheckerKing, checkerWidth, checkerHeight); }
+                lastMoves.Cheaker.Location = new Point(x, y);
+                lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
+                data[row, col].IsFill = true;
+                if(cvMayEat != null)
+                {
+                    cvMayEat.InGame = false;
+                    cvMayEat.Dispose();
+                    lblBlackScore.Text = (Int32.Parse(lblBlackScore.Text) + 1).ToString();
+                }
             }
         }
 
         private void makeBlackMove(int row, int col)
         {
-            CheckerView cv = null;
+            CheckerView cvMayEat = null;
             lastMoves.Cheaker.CoordinateOldPosiotin = lastMoves.Cheaker.CoordinatePosition;
             data[lastMoves.Cheaker.CoordinatePosition.X, lastMoves.Cheaker.CoordinatePosition.Y].IsFill = false;
             int x = lastMoves.Cheaker.Location.X;
             int y = lastMoves.Cheaker.Location.Y;
-            if ((data[row, col].IsFill)) { cv = getCheckerByCoordinate(row, col); }
-            if ((data[row, col].IsFill) && (cv.CheckerColor != lastMoves.Cheaker.CheckerColor))
+            //Check is any checker exist in new place
+            if ((data[row, col].IsFill)) { cvMayEat = getCheckerByCoordinate(row, col); }
+            //If checker exist in new place ==> check if his color is black and eat
+            if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor))
             {
-                //Add check if can jump 2 cubes 
-                row -= 2;
-                col += 2;
-
-                if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += cellWidth; }
-                else { x -= cellWidth; }
-                y -= cellHeight * 2;
-
+                row = lastMoves.Cheaker.CoordinatePosition.X - 2;
+                if(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
+                else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
+                if(row >=0 && col >= 0 && col <= 3 && !data[row, col].IsFill)
+                {
+                    if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += 2 * cellWidth; }
+                    else { x -= 2* cellWidth; }
+                    y -= cellHeight * 2;
+                }
             } else
             {
                 if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += cellWidth; }
                 else { x -= cellWidth; }
                 y -= cellHeight;
 
-                lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
-                data[row, col].IsFill = true;
-            }
-            if (row == 0) { lastMoves.Cheaker.Image = (Image)new Bitmap(blackChakerKing, checkerWidth, checkerHeight); }
-            lastMoves.Cheaker.Location = new Point(x, y);
-            lastMoves.Cheaker.Parent = gameDataView;
-            if (cv != null)
-            {
-                cv.InGame = false;
-                cv.Dispose();
-                lblWhiteScore.Text = (Int32.Parse(lblWhiteScore.Text) + 1).ToString();
             }
 
+            if(row >= 0 && col >= 0 && col <= 3)
+            {
+                if (row == 0) { lastMoves.Cheaker.Image = (Image)new Bitmap(blackChakerKing, checkerWidth, checkerHeight); }
+                lastMoves.Cheaker.Location = new Point(x, y);
+                lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
+                data[row, col].IsFill = true;
+                lastMoves.Cheaker.Parent = gameDataView;
+                if (cvMayEat != null)
+                {
+                    cvMayEat.InGame = false;
+                    cvMayEat.Dispose();
+                    lblWhiteScore.Text = (Int32.Parse(lblWhiteScore.Text) + 1).ToString();
+                }
+            }
         }
 
         private CheckerView getCheckerByCoordinate(int row, int col)

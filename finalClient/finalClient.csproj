@@ -61,6 +61,12 @@
       <DependentUpon>History.cs</DependentUpon>
     </Compile>
     <Compile Include="Logic\CheckersServiceCallbackHandler.cs" />
+    <Compile Include="LoserWin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoserWin.Designer.cs">
+      <DependentUpon>LoserWin.cs</DependentUpon>
+    </Compile>
     <Compile Include="Pause.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +100,12 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="UI\RowView.cs" />
+    <Compile Include="WinnerWin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinnerWin.Designer.cs">
+      <DependentUpon>WinnerWin.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="GameBoard.resx">
       <DependentUpon>GameBoard.cs</DependentUpon>
     </EmbeddedResource>
@@ -105,6 +117,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoserWin.resx">
+      <DependentUpon>LoserWin.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Pause.resx">
       <DependentUpon>Pause.cs</DependentUpon>
@@ -119,6 +134,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="WinnerWin.resx">
+      <DependentUpon>WinnerWin.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -155,6 +173,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\loser.png" />
+    <None Include="Images\winner.png" />
     <None Include="Service References\CheckersService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

@@ -78,8 +78,8 @@ namespace finalClient.Logic
 
         public void GameEnd(Move lastRivalMove, Status status)
         {
-
-            MessageBox.Show(status.ToString(), status.ToString());
+            if (Status.GAME_WIN == status) { new WinnerWin(lastRivalMove.PlayerId.ToString()).Show(); }
+            else { new LoserWin(lastRivalMove.PlayerId.ToString()).Show(); }
             GameBoard.InitNewGame();
         }
     }
