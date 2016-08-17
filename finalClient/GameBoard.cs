@@ -1,4 +1,4 @@
-﻿using finalClient.CheckersService;
+﻿using finalClient.HelperUtil;
 using finalClient.Logic;
 using finalClient.UI;
 using System;
@@ -25,10 +25,10 @@ namespace finalClient
         private CheckerView[] checkers = new CheckerView[8];
         private PotentialSteps lastMoves = new PotentialSteps();
 
-        public Game ActiveGame { get; set; }
-        public Player ActivePlayer { get; set; }
-        public ISoapCheckersService SoapService { get; set; }
-        public DuplexCheckersServiceClient DuplexService { get; set; }
+        public CheckersService.Game ActiveGame { get; set; }
+        public CheckersService.Player ActivePlayer { get; set; }
+        public CheckersService.ISoapCheckersService SoapService { get; set; }
+        public CheckersService.DuplexCheckersServiceClient DuplexService { get; set; }
         public Login Login { get; set; }
 
         public bool turn { get; set; }
@@ -52,13 +52,13 @@ namespace finalClient
             btnFriend.Enabled = true;
         }
 
-        public void SetPlayer(Player player)
+        public void SetPlayer(CheckersService.Player player)
         {
             lblUserName.Text = player.Name;
             this.ActivePlayer = player;
         }
 
-        internal void updateMoves(Move lastMove)
+        internal void updateMoves(CheckersService.Move lastMove)
         {
             updateTurnPanel(true);
             CheckerView cv = getCheckerByCoordinate(lastMove.From.X, lastMove.From.Y);
@@ -78,9 +78,15 @@ namespace finalClient
             gameDataView.Enabled = false;
         }
 
-        public Move CreateMoveWrapper(Coordinate from, Coordinate to)
+        public CheckersService.Move CreateMoveWrapper(Coordinate from, Coordinate to)
         {
-            Move move = new Move() { From = from, To = to, DateTime = DateTime.Now, GameId = ActiveGame.Id, PlayerId = ActivePlayer.Id  };
+            CheckersService.Move move = new CheckersService.Move() {
+                From = from,
+                To = to,
+                DateTime = DateTime.Now,
+                GameId = ActiveGame.Id,
+                PlayerId = ActivePlayer.Id
+            };
             return move;
         }
 
@@ -111,8 +117,8 @@ namespace finalClient
         private void LoadBlackCheakers(Point point)
         {
             int playerId = ActivePlayer.Id == ActiveGame.Player1.Id ? ActiveGame.Player1.Id : ActiveGame.Player2.Id;
-            List<Move> initialMoves = new List<Move>();
-            Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 6, Y = 1 });
+            List<CheckersService.Move> initialMoves = new List<CheckersService.Move>();
+            CheckersService.Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 6, Y = 1 });
             checkers[4] = new CheckerView(5,
                                          playerId, checkerHeight, checkerWidth,
                                          move.To,
@@ -157,7 +163,7 @@ namespace finalClient
             // Make sure that initial steps sent only once per player
             if (ActiveGame.Player1.Id == ActivePlayer.Id)
             {
-                DuplexService.SaveInitialPositions(initialMoves.ToArray(), Status.GAME_STARTED);
+                DuplexService.SaveInitialPositions(initialMoves.ToArray(), CheckersService.Status.GAME_STARTED);
             }
         }
 
@@ -165,8 +171,8 @@ namespace finalClient
         {
             int playerId = ActivePlayer.Id == ActiveGame.Player2.Id ? ActiveGame.Player2.Id : ActiveGame.Player1.Id;
 
-            List<Move> initialMoves = new List<Move>();
-            Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 0, Y = 1 });
+            List<CheckersService.Move> initialMoves = new List<CheckersService.Move>();
+            CheckersService.Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 0, Y = 1 });
             checkers[0] = new CheckerView(1,
                                           playerId, checkerHeight, checkerWidth,
                                           move.To, 
@@ -211,7 +217,7 @@ namespace finalClient
             // Make sure that initial steps sent only once per player
             if (ActiveGame.Player2.Id == ActivePlayer.Id)
             {
-                DuplexService.SaveInitialPositions(initialMoves.ToArray(), Status.GAME_STARTED);
+                DuplexService.SaveInitialPositions(initialMoves.ToArray(), CheckersService.Status.GAME_STARTED);
             }
         }
 
@@ -310,8 +316,7 @@ namespace finalClient
                 {
                     if (step != null) { gameDataView.Rows[step.X].Cells[step.Y].Style.BackColor = Color.Black; }
                 }
-                Move move = new Move
-                {
+                CheckersService.Move move = new CheckersService.Move {
                     GameId = ActiveGame.Id,
                     PlayerId = ActivePlayer.Id,
                     DateTime = DateTime.Now,
@@ -448,7 +453,7 @@ namespace finalClient
             //  ActiveGame = new Game(server.getGameId(), DateTime.Now, userId, 0);
             //call back with service with rival id which is 0  -> saved to game aginst computer
             //turn = true;
-            DuplexService.StartGame(new Game { Player1 = ActivePlayer, CreatedDateTime = DateTime.Now }, true);
+            DuplexService.StartGame(new CheckersService.Game { Player1 = ActivePlayer, CreatedDateTime = DateTime.Now }, true);
             gameDataView.Enabled = true;
         }
 

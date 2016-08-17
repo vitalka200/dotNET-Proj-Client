@@ -1,4 +1,4 @@
-﻿using finalClient.CheckersService;
+﻿using finalClient.HelperUtil;
 using finalClient.UI;
 using System;
 using System.Collections.Generic;
