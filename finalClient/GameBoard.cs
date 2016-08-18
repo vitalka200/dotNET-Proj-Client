@@ -366,7 +366,7 @@ namespace finalClient
             }
         }
 
-        private void makeWhiteMove(int row, int col)
+        public void makeWhiteMove(int row, int col)
         {
             CheckerView cvMayEat = null;
             bool flagEatRivalChecker = false;
@@ -423,7 +423,7 @@ namespace finalClient
             }
         }
 
-        private void makeBlackMove(int row, int col)
+        public void makeBlackMove(int row, int col)
         {
             CheckerView cvMayEat = null;
             bool flagEatRivalChecker = false;
@@ -481,7 +481,7 @@ namespace finalClient
             }
         }
 
-        private CheckerView getCheckerByCoordinate(int row, int col)
+        public CheckerView getCheckerByCoordinate(int row, int col)
         {
             Coordinate coordinateToCheck = new Coordinate { X = row, Y = col };
             foreach (CheckerView cv in checkers)

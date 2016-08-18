@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace finalClient.UI
 {
-    class CheckerView : PictureBox
+    public class CheckerView : PictureBox
     {
         public CheckerView(int id, int userId, int checkerHeight, int checkerWidth, Coordinate coordinatePosiotin, Coordinate coordinateOldPosiotin, Color checkerColor, Image image, Point location)
         {

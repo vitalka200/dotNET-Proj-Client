@@ -1,6 +1,7 @@
 ﻿using finalClient.CheckersService;
 using finalClient.HelperUtil;
 using finalClient.Logic;
+using finalClient.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -63,8 +64,16 @@ namespace finalClient
             //return to previous window list of moves
             if(historyGridView.SelectedRows.Count > 0)
             {
-                int gameId = (int)historyGridView.SelectedRows[0].Cells[0].Value;
-                Move[] allMoves = GameBoard.SoapService.RecoverGameMovesByPlayer();
+                int gameId = Convert.ToInt32(historyGridView.SelectedRows[0].Cells[0].Value);
+                Move[] allMoves = GameBoard.SoapService.RecoverGameMovesByGameId(gameId);
+
+                foreach(Move move in allMoves)
+                {
+                    GameBoard.InitNewGame();
+                    CheckerView cv = GameBoard.getCheckerByCoordinate(move.From.X, move.From.Y);
+                    if(cv.CheckerColor == Color.Black) { GameBoard.makeBlackMove(move.To.X, move.To.Y); }
+                    else { GameBoard.makeWhiteMove(move.To.X, move.To.Y); }
+                }
             }
         }
     }
