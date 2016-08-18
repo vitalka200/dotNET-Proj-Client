@@ -410,7 +410,7 @@ namespace finalClient
             if(row <= 7 && col >= 0 && col <= 3 )
             {
                 if(row == 7) { lastMoves.Cheaker.Image = (Image)new Bitmap(whiteCheckerKing, checkerWidth, checkerHeight); }
-                if (row == 7 && ActivePlayer.Id == ActiveGame.Player2.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
+              //  if (row == 7 && ActivePlayer.Id == ActiveGame.Player2.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
                 lastMoves.Cheaker.Location = new Point(x, y);
                 lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
                 data[row, col].IsFill = true;
@@ -467,7 +467,7 @@ namespace finalClient
             if(row >= 0 && col >= 0 && col <= 3)
             {
                 if(row == 0) { lastMoves.Cheaker.Image = (Image)new Bitmap(blackChakerKing, checkerWidth, checkerHeight); }
-                if (row == 0 && ActivePlayer.Id == ActiveGame.Player1.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
+              //  if (row == 0 && ActivePlayer.Id == ActiveGame.Player1.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
                 lastMoves.Cheaker.Location = new Point(x, y);
                 lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
                 data[row, col].IsFill = true;
@@ -516,9 +516,9 @@ namespace finalClient
         {
             gameDataView.Enabled = false;
             History historyWin = new History();
-            historyWin.InitHistoryParams(ActivePlayer.Id, lblUserName.Text, this);
+            historyWin.InitHistoryParams(this);
             historyWin.StartPosition = FormStartPosition.CenterParent;
-            Login.ServiceCallBackHandler.History = historyWin;
+           // Login.ServiceCallBackHandler.History = historyWin;
             historyWin.Show();
           //  List<Move> historyMoves = historyWin.ShowDialog();
 
@@ -526,37 +526,6 @@ namespace finalClient
             if yes - check if in middle of game
                         if yes - ask for stop the game */
         }
-
-     /*   private void btnUndo_Click(object sender, EventArgs e)
-        {
-            if(ActiveGame.GameMoves.Count == 0) { MessageBox.Show("Cannot preform Undo step"); }
-            else
-            {
-                Move lastMove = ActiveGame.GameMoves.Last();
-                CheckerView cv = getCheckerByID(lastMove.CheckerID);
-                if (!(cv.CoordinateOldPosiotin.Equals(new Coordinate(-1, -1))))
-                {
-                    int x = cv.Location.X;
-                    int y = cv.Location.Y;
-                    if (cv.CheckerColor == Color.Black)
-                    {
-                        if (cv.CoordinatePosition.Y < cv.CoordinateOldPosiotin.Y) { x += cellWidth; }
-                        else { x -= cellWidth; }
-                        y += cellHeight;
-                    }
-                    cv.Location = new Point(x, y);
-                    gameDataView.Rows[cv.CoordinatePosition.X].Cells[cv.CoordinatePosition.Y].Selected = false;
-                    data[cv.CoordinatePosition.X, cv.CoordinatePosition.Y].IsFill = false;
-                    data[cv.CoordinateOldPosiotin.X, cv.CoordinateOldPosiotin.Y].IsFill = true;
-                    cv.CoordinatePosition = cv.CoordinateOldPosiotin;
-                    cv.CoordinateOldPosiotin = new Coordinate(-1, -1);
-                    cv.Parent = gameDataView;
-                    ActiveGame.GameMoves.Remove(lastMove);
-
-                }
-            }
-        }*/
-
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {

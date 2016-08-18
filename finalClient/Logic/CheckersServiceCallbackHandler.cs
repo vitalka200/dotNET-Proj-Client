@@ -56,8 +56,8 @@ namespace finalClient.Logic
                 else { GameBoard.updateTurnPanel(false); }
                 GameBoard.updateMoves(lastMove);
             }
-            //We are white and now is our turn
-        if(lastMove.PlayerId != GameBoard.ActiveGame.Player1.Id) { GameBoard.updateTurnPanel(true); }
+            //We are black and now is our turn
+            if(lastMove.PlayerId == GameBoard.ActiveGame.Player2.Id) { GameBoard.updateTurnPanel(true); }
             //We are black and now is our turn
             else { GameBoard.updateTurnPanel(false); }
             GameBoard.GridViewEnableFlag(true);
