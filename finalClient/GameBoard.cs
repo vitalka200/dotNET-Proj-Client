@@ -43,6 +43,9 @@ namespace finalClient
         public GameBoard()
         {
             InitializeComponent();
+            lblUserColor.Visible = false;
+            lblRivalName.Visible = false;
+            lblRivalColor.Visible = false;
 
         }
 
@@ -60,13 +63,13 @@ namespace finalClient
 
         internal void updateMoves(CheckersService.Move lastMove)
         {
-            updateTurnPanel(true);
+         //   updateTurnPanel(true);
             CheckerView cv = getCheckerByCoordinate(lastMove.From.X, lastMove.From.Y);
             lastMoves.Cheaker = cv;
             if(cv.CheckerColor == Color.Black) { makeBlackMove(lastMove.To.X, lastMove.To.Y); }
             else { makeWhiteMove(lastMove.To.X, lastMove.To.Y); }
-            updateTurnPanel(false);
-            gameDataView.Enabled = true;
+         //   updateTurnPanel(false);
+         //   gameDataView.Enabled = true;
         }
 
         private void GameBoard_Load(object sender, EventArgs e)
@@ -92,7 +95,8 @@ namespace finalClient
 
         public void FirstCheakersConfig()
         {
-            RivalId = ActivePlayer.Id == ActiveGame.Player1.Id ? ActiveGame.Player2.Id : ActiveGame.Player2.Id;
+            RivalId = ActivePlayer.Id == ActiveGame.Player1.Id ? ActiveGame.Player2.Id : ActiveGame.Player1.Id;
+
             cellHeight = gameDataView.Rows[0].Height;
             cellWidth = gameDataView.Columns[0].Width;
             checkerHeight = (int)(cellHeight * 0.7);
@@ -116,7 +120,8 @@ namespace finalClient
 
         private void LoadBlackCheakers(Point point)
         {
-            int playerId = ActivePlayer.Id == ActiveGame.Player1.Id ? ActiveGame.Player1.Id : ActiveGame.Player2.Id;
+            int playerId = ActivePlayer.Id == ActiveGame.Player1.Id ? ActivePlayer.Id : RivalId;
+
             List<CheckersService.Move> initialMoves = new List<CheckersService.Move>();
             CheckersService.Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 6, Y = 1 });
             checkers[4] = new CheckerView(5,
@@ -169,7 +174,7 @@ namespace finalClient
 
         private void LoadWhiteCheakers(Point point)
         {
-            int playerId = ActivePlayer.Id == ActiveGame.Player2.Id ? ActiveGame.Player2.Id : ActiveGame.Player1.Id;
+            int playerId = ActivePlayer.Id == ActiveGame.Player2.Id ? ActivePlayer.Id : RivalId;
 
             List<CheckersService.Move> initialMoves = new List<CheckersService.Move>();
             CheckersService.Move move = CreateMoveWrapper(new Coordinate { X = -1, Y = -1 }, new Coordinate { X = 0, Y = 1 });
@@ -223,6 +228,8 @@ namespace finalClient
 
         public void updateTurnPanel(bool turn)
         {
+            if(!pictureBoxTurn.Visible) { pictureBoxTurn.Visible = true; }
+            pictureBoxTurn.Image = null;
             if(turn) { pictureBoxTurn.Image = Util.resizeImage(blackChaker, 100, 100); }
             else { pictureBoxTurn.Image = Util.resizeImage(whiteChecker, 100, 100); }
         }
@@ -233,58 +240,60 @@ namespace finalClient
             List<Coordinate> stepsToAdd = new List<Coordinate>();
             CheckerView cv = (CheckerView)sender;
             CheckerView rivalChecker = null;
+            if (cv.UserID == ActivePlayer.Id)
+            { 
+                if (lastMoves != null)
+                {
+                    lastMoves = null;
+                    lastMoves = new PotentialSteps();
+                }
 
-            if (lastMoves != null)
-            {
-                lastMoves = null;
-                lastMoves = new PotentialSteps();
-            }
-
-            if (data[cv.CoordinatePosition.X, cv.CoordinatePosition.Y].BackColor != Color.White)
-            {
-                if ((ActivePlayer.Id == cv.UserID))
-                { 
-                    if (cv.CheckerColor == Color.Black) { lastMoves.GetPotentialStepBlackCheakers(cv.CoordinatePosition.X, cv.CoordinatePosition.Y); }
-                    else { lastMoves.GetPotentialStepWhiteCheakers(cv.CoordinatePosition.X, cv.CoordinatePosition.Y); }
-                    if (lastMoves.PotentialMoves != null)
+                if (data[cv.CoordinatePosition.X, cv.CoordinatePosition.Y].BackColor != Color.White)
+                {
+                    if ((ActivePlayer.Id == cv.UserID))
                     {
-                        foreach (Coordinate step in lastMoves.PotentialMoves)
+                        if (cv.CheckerColor == Color.Black) { lastMoves.GetPotentialStepBlackCheakers(cv.CoordinatePosition.X, cv.CoordinatePosition.Y); }
+                        else { lastMoves.GetPotentialStepWhiteCheakers(cv.CoordinatePosition.X, cv.CoordinatePosition.Y); }
+                        if (lastMoves.PotentialMoves != null)
                         {
-                            if ((step != null) && (step.X >= 0) && (step.Y >= 0) && (step.X <= 7) && (step.Y <= 3))
+                            foreach (Coordinate step in lastMoves.PotentialMoves)
                             {
-                                if ((!data[step.X, step.Y].IsFill)) { gameDataView.Rows[step.X].Cells[step.Y].Style.BackColor = Color.Green; }
-                                else
+                                if ((step != null) && (step.X >= 0) && (step.Y >= 0) && (step.X <= 7) && (step.Y <= 3))
                                 {
-                                    Coordinate newStepToEatRival = new Coordinate { X = step.X, Y = step.Y };
-                                    rivalChecker = getCheckerByCoordinate(step.X, step.Y);
-                                    if (rivalChecker.CheckerColor != cv.CheckerColor)
+                                    if ((!data[step.X, step.Y].IsFill)) { gameDataView.Rows[step.X].Cells[step.Y].Style.BackColor = Color.Green; }
+                                    else
                                     {
-                                        if (rivalChecker.CheckerColor == Color.White)
+                                        Coordinate newStepToEatRival = new Coordinate { X = step.X, Y = step.Y };
+                                        rivalChecker = getCheckerByCoordinate(step.X, step.Y);
+                                        if (rivalChecker.CheckerColor != cv.CheckerColor)
                                         {
-                                            newStepToEatRival.X -= 1;
-                                            if (newStepToEatRival.Y > cv.CoordinatePosition.Y) { newStepToEatRival.Y += 1; }
-                                            else { newStepToEatRival.Y -= 1; }
-                                            if (newStepToEatRival.X >= 0 && newStepToEatRival.Y >= 0 && newStepToEatRival.Y <= 3) { gameDataView.Rows[newStepToEatRival.X].Cells[newStepToEatRival.Y].Style.BackColor = Color.Green; }
-                                            else { stepsToRemove.Add(newStepToEatRival); }
+                                            if (rivalChecker.CheckerColor == Color.White)
+                                            {
+                                                newStepToEatRival.X -= 1;
+                                                if (newStepToEatRival.Y > cv.CoordinatePosition.Y) { newStepToEatRival.Y += 1; }
+                                                else { newStepToEatRival.Y -= 1; }
+                                                if (newStepToEatRival.X >= 0 && newStepToEatRival.Y >= 0 && newStepToEatRival.Y <= 3) { gameDataView.Rows[newStepToEatRival.X].Cells[newStepToEatRival.Y].Style.BackColor = Color.Green; }
+                                                else { stepsToRemove.Add(newStepToEatRival); }
+                                            }
+                                            else
+                                            {
+                                                newStepToEatRival.X += 1;
+                                                if (newStepToEatRival.Y > cv.CoordinatePosition.Y) { newStepToEatRival.Y += 1; }
+                                                else { newStepToEatRival.Y -= 1; }
+                                                if (newStepToEatRival.X <= 7 && newStepToEatRival.Y >= 0 && newStepToEatRival.Y <= 3) { gameDataView.Rows[newStepToEatRival.X].Cells[newStepToEatRival.Y].Style.BackColor = Color.Green; }
+                                                else { stepsToRemove.Add(newStepToEatRival); }
+                                            }
                                         }
-                                        else
-                                        {
-                                            newStepToEatRival.X += 1;
-                                            if (newStepToEatRival.Y > cv.CoordinatePosition.Y) { newStepToEatRival.Y += 1; }
-                                            else { newStepToEatRival.Y -= 1; }
-                                            if (newStepToEatRival.X <= 7 && newStepToEatRival.Y >= 0 && newStepToEatRival.Y <= 3) { gameDataView.Rows[newStepToEatRival.X].Cells[newStepToEatRival.Y].Style.BackColor = Color.Green; }
-                                            else { stepsToRemove.Add(newStepToEatRival); }
-                                        }
+                                        stepsToRemove.Add(step);
+                                        stepsToAdd.Add(newStepToEatRival);
                                     }
-                                    stepsToRemove.Add(step);
-                                    stepsToAdd.Add(newStepToEatRival);
                                 }
                             }
                         }
+                        lastMoves.Cheaker = cv;
+                        foreach (Coordinate step in stepsToAdd) { lastMoves.PotentialMoves.Add(step); }
+                        foreach (Coordinate step in stepsToRemove) { lastMoves.PotentialMoves.Remove(step); }
                     }
-                    lastMoves.Cheaker = cv;
-                    foreach (Coordinate step in stepsToAdd) { lastMoves.PotentialMoves.Add(step); }
-                    foreach (Coordinate step in stepsToRemove) { lastMoves.PotentialMoves.Remove(step); }
                 }
             }
         }
@@ -295,8 +304,9 @@ namespace finalClient
             pnlWhite.BackgroundImageLayout = ImageLayout.Center;
             pnlBlack.BackgroundImage = Util.resizeImage(blackChaker, 50, 50);
             pnlBlack.BackgroundImageLayout = ImageLayout.Center;
-            pictureBoxTurn.BackgroundImage = Util.resizeImage(whiteChecker, 90, 90);
+          //  pictureBoxTurn.BackgroundImage = Util.resizeImage(whiteChecker, 100, 100);
             pictureBoxTurn.BackgroundImageLayout = ImageLayout.Center;
+            pictureBoxTurn.Visible = false;
         }
 
         private void InitializeBoardGame()
@@ -350,6 +360,7 @@ namespace finalClient
                     To = lastMoves.Cheaker.CoordinatePosition
                 };
                 DuplexService.MakeMove(move);
+                updateTurnPanel(false);
                 gameDataView.ClearSelection();
                 gameDataView.Enabled = false;
             }
@@ -593,6 +604,33 @@ namespace finalClient
             pasueWin.StartPosition = FormStartPosition.CenterParent;
             pasueWin.Show();
             gameDataView.Enabled = true;
+        }
+
+        public void updateRivalPlayerName()
+        {
+            lblUserName.Text = "";
+            if (ActivePlayer.Name.Equals(ActiveGame.Player1.Name)) //We are black
+            {
+                lblUserName.Text = ActivePlayer.Name;
+                lblRivalName.Text = ActiveGame.Player2.Name;
+                lblUserColor.Text = "as black";
+                lblUserColor.ForeColor = Color.Black;
+                lblRivalColor.Text = "as white";
+                lblRivalColor.ForeColor = Color.White;
+            }
+            else //we are white
+            {
+                lblRivalName.Text = ActiveGame.Player1.Name;
+                lblUserName.Text = ActivePlayer.Name;
+                lblRivalColor.Text = "as black";
+                lblRivalColor.ForeColor = Color.Black;
+                lblUserColor.Text = "as white";
+                lblUserColor.ForeColor = Color.White;
+            }
+
+            lblRivalName.Visible = true;
+            lblRivalColor.Visible = true;
+            lblUserColor.Visible = true;
         }
     }
 }

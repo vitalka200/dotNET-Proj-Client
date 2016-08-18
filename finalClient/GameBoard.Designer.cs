@@ -59,6 +59,9 @@
             this.dataBaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblUserColor = new System.Windows.Forms.Label();
+            this.lblRivalName = new System.Windows.Forms.Label();
+            this.lblRivalColor = new System.Windows.Forms.Label();
             this.boardPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gameDataView)).BeginInit();
             this.infoPanel.SuspendLayout();
@@ -223,8 +226,8 @@
             // 
             this.lblUserName.AutoSize = true;
             this.lblUserName.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblUserName.Location = new System.Drawing.Point(79, 20);
+            this.lblUserName.ForeColor = System.Drawing.Color.Yellow;
+            this.lblUserName.Location = new System.Drawing.Point(-3, 14);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(167, 33);
             this.lblUserName.TabIndex = 0;
@@ -234,6 +237,9 @@
             // 
             this.blackScore.BackColor = System.Drawing.Color.Transparent;
             this.blackScore.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.blackScore.Controls.Add(this.lblRivalColor);
+            this.blackScore.Controls.Add(this.lblRivalName);
+            this.blackScore.Controls.Add(this.lblUserColor);
             this.blackScore.Controls.Add(this.btnPause);
             this.blackScore.Controls.Add(this.btnHistory);
             this.blackScore.Controls.Add(this.btnComputer);
@@ -249,9 +255,9 @@
             this.btnPause.BackColor = System.Drawing.Color.Yellow;
             this.btnPause.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnPause.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPause.Location = new System.Drawing.Point(31, 235);
+            this.btnPause.Location = new System.Drawing.Point(160, 235);
             this.btnPause.Name = "btnPause";
-            this.btnPause.Size = new System.Drawing.Size(247, 35);
+            this.btnPause.Size = new System.Drawing.Size(139, 35);
             this.btnPause.TabIndex = 8;
             this.btnPause.Text = "Pause";
             this.btnPause.UseVisualStyleBackColor = false;
@@ -262,11 +268,11 @@
             this.btnHistory.BackColor = System.Drawing.Color.Yellow;
             this.btnHistory.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHistory.Location = new System.Drawing.Point(30, 181);
+            this.btnHistory.Location = new System.Drawing.Point(10, 235);
             this.btnHistory.Name = "btnHistory";
-            this.btnHistory.Size = new System.Drawing.Size(247, 35);
+            this.btnHistory.Size = new System.Drawing.Size(139, 35);
             this.btnHistory.TabIndex = 7;
-            this.btnHistory.Text = "Games History";
+            this.btnHistory.Text = "History";
             this.btnHistory.UseVisualStyleBackColor = false;
             this.btnHistory.Click += new System.EventHandler(this.btnHistory_Click);
             // 
@@ -275,7 +281,7 @@
             this.btnComputer.BackColor = System.Drawing.Color.Yellow;
             this.btnComputer.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnComputer.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnComputer.Location = new System.Drawing.Point(33, 127);
+            this.btnComputer.Location = new System.Drawing.Point(33, 169);
             this.btnComputer.Name = "btnComputer";
             this.btnComputer.Size = new System.Drawing.Size(244, 35);
             this.btnComputer.TabIndex = 6;
@@ -289,7 +295,7 @@
             this.btnFriend.Enabled = false;
             this.btnFriend.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFriend.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnFriend.Location = new System.Drawing.Point(33, 77);
+            this.btnFriend.Location = new System.Drawing.Point(33, 110);
             this.btnFriend.Name = "btnFriend";
             this.btnFriend.Size = new System.Drawing.Size(244, 35);
             this.btnFriend.TabIndex = 5;
@@ -379,6 +385,42 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // lblUserColor
+            // 
+            this.lblUserColor.AutoSize = true;
+            this.lblUserColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserColor.ForeColor = System.Drawing.Color.Black;
+            this.lblUserColor.Location = new System.Drawing.Point(175, 14);
+            this.lblUserColor.Name = "lblUserColor";
+            this.lblUserColor.Size = new System.Drawing.Size(131, 33);
+            this.lblUserColor.TabIndex = 9;
+            this.lblUserColor.Text = "as black";
+            this.lblUserColor.Visible = false;
+            // 
+            // lblRivalName
+            // 
+            this.lblRivalName.AutoSize = true;
+            this.lblRivalName.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRivalName.ForeColor = System.Drawing.Color.Yellow;
+            this.lblRivalName.Location = new System.Drawing.Point(-2, 62);
+            this.lblRivalName.Name = "lblRivalName";
+            this.lblRivalName.Size = new System.Drawing.Size(172, 33);
+            this.lblRivalName.TabIndex = 10;
+            this.lblRivalName.Text = "Rival name";
+            this.lblRivalName.Visible = false;
+            // 
+            // lblRivalColor
+            // 
+            this.lblRivalColor.AutoSize = true;
+            this.lblRivalColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRivalColor.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblRivalColor.Location = new System.Drawing.Point(175, 62);
+            this.lblRivalColor.Name = "lblRivalColor";
+            this.lblRivalColor.Size = new System.Drawing.Size(130, 33);
+            this.lblRivalColor.TabIndex = 11;
+            this.lblRivalColor.Text = "as white";
+            this.lblRivalColor.Visible = false;
+            // 
             // GameBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -446,5 +488,8 @@
         private System.Windows.Forms.Button btnComputer;
         private System.Windows.Forms.PictureBox pictureBoxTurn;
         private System.Windows.Forms.Button btnPause;
+        private System.Windows.Forms.Label lblRivalColor;
+        private System.Windows.Forms.Label lblRivalName;
+        private System.Windows.Forms.Label lblUserColor;
     }
 }
