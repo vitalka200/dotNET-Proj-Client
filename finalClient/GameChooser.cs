@@ -30,10 +30,21 @@ namespace finalClient
         private void GameChooser_Load(object sender, EventArgs e)
         {
             PlayerGames = GameBoard.SoapService.GetGamesByPlayer(GameBoard.ActivePlayer);
+
+            if (PlayerGames != null)
+            {
+                PlayerGames =
+                    (from g in PlayerGames
+                     where Status.GAME_COMPLETED != g.GameStatus
+                     select g).ToArray();
+            }
+
             if (PlayerGames != null && PlayerGames.Length > 0)
             {
                 int locationForWaiting = 1;
                 int locationForReady = 1;
+
+
                 for (int i = 0; i < PlayerGames.Count(); i++)
                 {
                     RadioButton radio = new RadioButton();
