@@ -75,7 +75,7 @@ namespace finalClient
             if (RadioID >= 0)
             {
                 this.Dispose();
-                GameBoard.DuplexService.StartGame(PlayerGames[RadioID], false);
+                GameBoard.DuplexService.StartGameAsync(PlayerGames[RadioID], false);
             }
             else
             {

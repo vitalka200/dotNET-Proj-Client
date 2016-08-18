@@ -168,7 +168,7 @@ namespace finalClient
             // Make sure that initial steps sent only once per player
             if (ActiveGame.Player1.Id == ActivePlayer.Id)
             {
-                DuplexService.SaveInitialPositions(initialMoves.ToArray(), CheckersService.Status.GAME_STARTED);
+                DuplexService.SaveInitialPositionsAsync(initialMoves.ToArray(), CheckersService.Status.GAME_STARTED);
             }
         }
 
@@ -222,7 +222,7 @@ namespace finalClient
             // Make sure that initial steps sent only once per player
             if (ActiveGame.Player2.Id == ActivePlayer.Id)
             {
-                DuplexService.SaveInitialPositions(initialMoves.ToArray(), CheckersService.Status.GAME_STARTED);
+                DuplexService.SaveInitialPositionsAsync(initialMoves.ToArray(), CheckersService.Status.GAME_STARTED);
             }
         }
 
@@ -359,7 +359,7 @@ namespace finalClient
                     From = lastMoves.Cheaker.CoordinateOldPosiotin,
                     To = lastMoves.Cheaker.CoordinatePosition
                 };
-                DuplexService.MakeMove(move);
+                DuplexService.MakeMoveAsync(move);
                 updateTurnPanel(false);
                 gameDataView.ClearSelection();
                 gameDataView.Enabled = false;
@@ -502,22 +502,13 @@ namespace finalClient
 
         private void btnFriend_Click(object sender, EventArgs e)
         {
-            //ActiveGame = new Game(server.getGameId(), DateTime.Now, userId, rivalId);
             GameChooser gameChooser = new GameChooser(this);
             gameChooser.Show();
-
-
-            //DuplexService.StartGame(ActiveGame, false);
-            //turn = true;
-            //gameDataView.Enabled = true;
         }
 
         private void btnComputer_Click(object sender, EventArgs e)
         {
-            //  ActiveGame = new Game(server.getGameId(), DateTime.Now, userId, 0);
-            //call back with service with rival id which is 0  -> saved to game aginst computer
-            //turn = true;
-            DuplexService.StartGame(new CheckersService.Game { Player1 = ActivePlayer, CreatedDateTime = DateTime.Now }, true);
+            DuplexService.StartGameAsync(new CheckersService.Game { Player1 = ActivePlayer, CreatedDateTime = DateTime.Now }, true);
             gameDataView.Enabled = true;
         }
 

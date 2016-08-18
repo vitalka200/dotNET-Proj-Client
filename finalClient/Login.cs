@@ -42,7 +42,7 @@ namespace finalClient
 
         private void loginBtn_Click(object sender, EventArgs e)
         {
-            DuplexService.Login(userTextBox.Text, passwordTextBox.Text);
+            DuplexService.LoginAsync(userTextBox.Text, passwordTextBox.Text);
         }
 
         private void exitBtn_Click(object sender, EventArgs e)
