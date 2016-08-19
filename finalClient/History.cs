@@ -40,8 +40,8 @@ namespace finalClient
             historyGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             var games =
                 (from g in GameBoard.SoapService.GetGamesByPlayer(GameBoard.ActivePlayer)
-                let winner = g.WinnerPlayerNum == 1 ? g.Player1.Name : g.Player2.Name
-                //where g.GameStatus == CheckersService.Status.GAME_COMPLETED
+                let winner = g.WinnerPlayerNum == 1 ? g.Player1.Name : (g.WinnerPlayerNum == 2 ? g.Player2.Name : "No Winner" )
+                where g.GameStatus == CheckersService.Status.GAME_COMPLETED
                 select new { Id = g.Id,
                     CreationDate = g.CreatedDateTime,
                     Player1Name = g.Player1.Name,

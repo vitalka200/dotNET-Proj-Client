@@ -547,7 +547,7 @@ namespace finalClient
             data = new DataCellInfo[NUMBER_OF_ROWS, NUMBER_OF_COLS];
             gameDataView.ClearSelection();
             InitializeBoardGame();
-            FirstCheakersConfig();
+            //FirstCheakersConfig();
             gameDataView.Enabled = false;
         }
 

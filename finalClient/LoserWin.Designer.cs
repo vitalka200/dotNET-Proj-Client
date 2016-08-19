@@ -77,6 +77,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "LoserWin";
             this.Text = "Loser";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LoserWin_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

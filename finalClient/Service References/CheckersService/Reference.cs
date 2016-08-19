@@ -570,7 +570,7 @@ namespace finalClient.CheckersService {
         void PlayerTurnCallback(finalClient.CheckersService.Move lastRivalMove);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IDuplexCheckersService/GameEnd")]
-        void GameEnd(finalClient.CheckersService.Move lastRivalMove, finalClient.CheckersService.Status status);
+        void GameEnd(finalClient.CheckersService.Game game, finalClient.CheckersService.Move lastRivalMove, finalClient.CheckersService.Status status);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -649,6 +649,12 @@ namespace finalClient.CheckersService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISoapCheckersService/GetGamesByPlayer", ReplyAction="http://tempuri.org/ISoapCheckersService/GetGamesByPlayerResponse")]
         System.Threading.Tasks.Task<finalClient.CheckersService.Game[]> GetGamesByPlayerAsync(finalClient.CheckersService.Player player);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISoapCheckersService/RecoverGameMovesByGameId", ReplyAction="http://tempuri.org/ISoapCheckersService/RecoverGameMovesByGameIdResponse")]
+        finalClient.CheckersService.Move[] RecoverGameMovesByGameId(int gameId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ISoapCheckersService/RecoverGameMovesByGameId", ReplyAction="http://tempuri.org/ISoapCheckersService/RecoverGameMovesByGameIdResponse")]
+        System.Threading.Tasks.Task<finalClient.CheckersService.Move[]> RecoverGameMovesByGameIdAsync(int gameId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -692,6 +698,14 @@ namespace finalClient.CheckersService {
         
         public System.Threading.Tasks.Task<finalClient.CheckersService.Game[]> GetGamesByPlayerAsync(finalClient.CheckersService.Player player) {
             return base.Channel.GetGamesByPlayerAsync(player);
+        }
+        
+        public finalClient.CheckersService.Move[] RecoverGameMovesByGameId(int gameId) {
+            return base.Channel.RecoverGameMovesByGameId(gameId);
+        }
+        
+        public System.Threading.Tasks.Task<finalClient.CheckersService.Move[]> RecoverGameMovesByGameIdAsync(int gameId) {
+            return base.Channel.RecoverGameMovesByGameIdAsync(gameId);
         }
     }
     

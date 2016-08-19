@@ -13,11 +13,19 @@ namespace finalClient
 {
     public partial class LoserWin : Form
     {
-        public LoserWin(String name)
+        private GameBoard Board { get; set; }
+
+        public LoserWin(GameBoard Board)
         {
+            this.Board = Board;
             InitializeComponent();
-            lblUserName.Text = name;
+            lblUserName.Text = Board.ActivePlayer.Name;
             pictureBox1.Image = Util.resizeImage(Properties.Resources.loser, 215, 160);
+        }
+
+        private void LoserWin_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Board.InitNewGame();
         }
     }
 }

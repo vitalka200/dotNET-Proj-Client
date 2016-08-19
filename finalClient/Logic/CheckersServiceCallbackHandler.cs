@@ -65,6 +65,7 @@ namespace finalClient.Logic
 
         public void StartGameCallback(Game game, Status status)
         {
+            if (GameBoard.ActiveGame != null && GameBoard.ActiveGame.Id == game.Id) { return; } // make sure we are not starting same game twice
             if (Status.GAME_STARTED == status)
             {
                 GameBoard.ActiveGame = game;
@@ -80,12 +81,10 @@ namespace finalClient.Logic
             }
         }
 
-        public void GameEnd(Move lastRivalMove, Status status)
+        public void GameEnd(Game game, Move lastRivalMove, Status status)
         {
-            String playerName = GameBoard.ActiveGame.Player1.Id == lastRivalMove.Id ? GameBoard.ActiveGame.Player1.Name : GameBoard.ActiveGame.Player2.Name;
-            if (Status.GAME_WIN == status) { new WinnerWin(playerName).Show(); }
-            else { new LoserWin(playerName).Show(); }
-            GameBoard.InitNewGame();
+            if (Status.GAME_WIN == status) { new WinnerWin(GameBoard).Show(); }
+            else { new LoserWin(GameBoard).Show(); }
         }
     }
 }
