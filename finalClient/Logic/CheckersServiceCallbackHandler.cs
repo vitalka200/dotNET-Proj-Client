@@ -40,7 +40,10 @@ namespace finalClient.Logic
 
         public void MakeMoveCallback(Status status)
         {
-            //throw new NotImplementedException();
+            //We are black and now is our turn
+            if (GameBoard.ActivePlayer.Id == GameBoard.ActiveGame.Player2.Id) { GameBoard.updateTurnPanel(true); }
+            //We are black and now is our turn
+            else { GameBoard.updateTurnPanel(false); }
         }
 
         public void PlayerTurnCallback(Move lastMove)
@@ -50,16 +53,12 @@ namespace finalClient.Logic
 
             if (lastMove.From.X != -1) // Not the initial move
             {
-                //We are black and the turn belongs to white
-                if (lastMove.PlayerId == GameBoard.ActiveGame.Player1.Id) { GameBoard.updateTurnPanel(true); }
-                //We are white and the turn belong to black
-                else { GameBoard.updateTurnPanel(false); }
                 GameBoard.updateMoves(lastMove);
+                //We are black and now is our turn
+                if (lastMove.PlayerId == GameBoard.ActiveGame.Player2.Id) { GameBoard.updateTurnPanel(true); }
+                //We are black and now is our turn
+                else { GameBoard.updateTurnPanel(false); }
             }
-            //We are black and now is our turn
-            if(lastMove.PlayerId == GameBoard.ActiveGame.Player2.Id) { GameBoard.updateTurnPanel(true); }
-            //We are black and now is our turn
-            else { GameBoard.updateTurnPanel(false); }
             GameBoard.GridViewEnableFlag(true);
         }
 
@@ -71,9 +70,10 @@ namespace finalClient.Logic
                 GameBoard.ActiveGame = game;
                 GameBoard.FirstCheakersConfig();
                 GameBoard.updateRivalPlayerName();
-              
-                //On start game -> black user is start
-                GameBoard.updateTurnPanel(true); 
+
+                //First moves black
+                GameBoard.updateTurnPanel(true);
+
             }
             else
             {

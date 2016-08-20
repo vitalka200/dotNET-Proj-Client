@@ -360,7 +360,7 @@ namespace finalClient
                     To = lastMoves.Cheaker.CoordinatePosition
                 };
                 DuplexService.MakeMoveAsync(move);
-                updateTurnPanel(false);
+                //updateTurnPanel(false);
                 gameDataView.ClearSelection();
                 gameDataView.Enabled = false;
             }
