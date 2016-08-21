@@ -63,13 +63,10 @@ namespace finalClient
 
         internal void updateMoves(CheckersService.Move lastMove)
         {
-         //   updateTurnPanel(true);
             CheckerView cv = getCheckerByCoordinate(lastMove.From.X, lastMove.From.Y);
             lastMoves.Cheaker = cv;
             if(cv.CheckerColor == Color.Black) { makeBlackMove(lastMove.To.X, lastMove.To.Y); }
             else { makeWhiteMove(lastMove.To.X, lastMove.To.Y); }
-         //   updateTurnPanel(false);
-         //   gameDataView.Enabled = true;
         }
 
         private void GameBoard_Load(object sender, EventArgs e)
@@ -77,7 +74,6 @@ namespace finalClient
             this.BackgroundImage = Properties.Resources.back;
             LoadImageView();
             InitializeBoardGame();
-            //FirstCheakersConfig();
             gameDataView.Enabled = false;
         }
 
@@ -304,7 +300,6 @@ namespace finalClient
             pnlWhite.BackgroundImageLayout = ImageLayout.Center;
             pnlBlack.BackgroundImage = Util.resizeImage(blackChaker, 50, 50);
             pnlBlack.BackgroundImageLayout = ImageLayout.Center;
-          //  pictureBoxTurn.BackgroundImage = Util.resizeImage(whiteChecker, 100, 100);
             pictureBoxTurn.BackgroundImageLayout = ImageLayout.Center;
             pictureBoxTurn.Visible = false;
         }
@@ -360,7 +355,7 @@ namespace finalClient
                     To = lastMoves.Cheaker.CoordinatePosition
                 };
                 DuplexService.MakeMoveAsync(move);
-                //updateTurnPanel(false);
+
                 gameDataView.ClearSelection();
                 gameDataView.Enabled = false;
             }
@@ -383,23 +378,14 @@ namespace finalClient
             data[lastMoves.Cheaker.CoordinatePosition.X, lastMoves.Cheaker.CoordinatePosition.Y].IsFill = false;
             int x = lastMoves.Cheaker.Location.X;
             int y = lastMoves.Cheaker.Location.Y;
-            //Check is any checker exist in new place
-            //if ((data[row, col].IsFill)) { cvMayEat = getCheckerByCoordinate(row, col); }
-            //If checker exist in new place ==> check if his color is black and eat
-            //if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor))
+
             if(flagEatRivalChecker)
             {
                 data[cvMayEat.CoordinatePosition.X, cvMayEat.CoordinatePosition.Y].IsFill = false;
-                //row = lastMoves.Cheaker.CoordinateOldPosiotin.X + 2;
-                //if(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
-                //else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
-                //if(row <= 7 && col >= 0 && col <= 3 && !data[row, col].IsFill)
-                //{
 
                 if (lastMoves.Cheaker.CoordinatePosition.Y < col ) { x += 2 * cellWidth; }
                     else { x -= 2 * cellWidth; }
                     y += cellHeight * 2;
-               // }
             }
             else
             {
@@ -410,7 +396,7 @@ namespace finalClient
             if(row <= 7 && col >= 0 && col <= 3 )
             {
                 if(row == 7) { lastMoves.Cheaker.Image = (Image)new Bitmap(whiteCheckerKing, checkerWidth, checkerHeight); }
-              //  if (row == 7 && ActivePlayer.Id == ActiveGame.Player2.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
+
                 lastMoves.Cheaker.Location = new Point(x, y);
                 lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
                 data[row, col].IsFill = true;
@@ -440,22 +426,13 @@ namespace finalClient
             data[lastMoves.Cheaker.CoordinatePosition.X, lastMoves.Cheaker.CoordinatePosition.Y].IsFill = false;
             int x = lastMoves.Cheaker.Location.X;
             int y = lastMoves.Cheaker.Location.Y;
-            //Check is any checker exist in new place
-           // if ((data[row, col].IsFill) && flagEatRivalChecker) { cvMayEat = getCheckerByCoordinate(row, col); }
-            //If checker exist in new place ==> check if his color is black and eat
-           // if ((data[row, col].IsFill) && (cvMayEat.CheckerColor != lastMoves.Cheaker.CheckerColor) && flagEatRivalChecker)
+
             if(flagEatRivalChecker)
             {
-                //row = lastMoves.Cheaker.CoordinatePosition.X - 2;
-                //f(lastMoves.Cheaker.CoordinateOldPosiotin.Y < cvMayEat.CoordinatePosition.Y) { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y + 2; }
-                //else { col = lastMoves.Cheaker.CoordinateOldPosiotin.Y - 2; }
-                //if(row >=0 && col >= 0 && col <= 3 && !data[row, col].IsFill)
-                // {
                 data[cvMayEat.CoordinatePosition.X, cvMayEat.CoordinatePosition.Y].IsFill = false;
                 if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += 2 * cellWidth; }
                     else { x -= 2* cellWidth; }
                     y -= cellHeight * 2;
-               // }
             } else
             {
                 if (lastMoves.Cheaker.CoordinatePosition.Y < col) { x += cellWidth; }
@@ -467,7 +444,6 @@ namespace finalClient
             if(row >= 0 && col >= 0 && col <= 3)
             {
                 if(row == 0) { lastMoves.Cheaker.Image = (Image)new Bitmap(blackChakerKing, checkerWidth, checkerHeight); }
-              //  if (row == 0 && ActivePlayer.Id == ActiveGame.Player1.Id) { (new WinnerWin(ActivePlayer.Name)).Show(); }
                 lastMoves.Cheaker.Location = new Point(x, y);
                 lastMoves.Cheaker.CoordinatePosition = new Coordinate { X = row, Y = col };
                 data[row, col].IsFill = true;
@@ -518,13 +494,7 @@ namespace finalClient
             History historyWin = new History();
             historyWin.InitHistoryParams(this);
             historyWin.StartPosition = FormStartPosition.CenterParent;
-           // Login.ServiceCallBackHandler.History = historyWin;
             historyWin.Show();
-          //  List<Move> historyMoves = historyWin.ShowDialog();
-
-            /*Check if returned list of moves
-            if yes - check if in middle of game
-                        if yes - ask for stop the game */
         }
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -543,11 +513,10 @@ namespace finalClient
 
         public void InitNewGame()
         {
-            foreach (CheckerView cv in checkers) { cv.Dispose(); }
+            foreach (CheckerView cv in checkers) { if (cv != null) { cv.Dispose(); } }
             data = new DataCellInfo[NUMBER_OF_ROWS, NUMBER_OF_COLS];
             gameDataView.ClearSelection();
             InitializeBoardGame();
-            //FirstCheakersConfig();
             gameDataView.Enabled = false;
         }
 
@@ -591,6 +560,12 @@ namespace finalClient
             lblRivalName.Visible = true;
             lblRivalColor.Visible = true;
             lblUserColor.Visible = true;
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string message = string.Format("Name: {0,-22} ID: {1,-10}\nName: {2,-15} ID: {3,-10}", "Vitali Karabitski", "317721652", "Dana Schvarzman", "305699282");
+            MessageBox.Show(this, message, "About");
         }
     }
 }

@@ -50,5 +50,11 @@ namespace finalClient
             this.Close();
             this.Dispose();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string message = string.Format("Name: {0,-22} ID: {1,-10}\nName: {2,-15} ID: {3,-10}", "Vitali Karabitski", "317721652", "Dana Schvarzman", "305699282");
+            MessageBox.Show(this, message, "About");
+        }
     }
 }

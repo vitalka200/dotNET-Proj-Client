@@ -68,6 +68,7 @@ namespace finalClient.Logic
             if (Status.GAME_STARTED == status)
             {
                 GameBoard.ActiveGame = game;
+                GameBoard.InitNewGame();
                 GameBoard.FirstCheakersConfig();
                 GameBoard.updateRivalPlayerName();
 

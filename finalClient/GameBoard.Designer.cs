@@ -44,24 +44,15 @@
             this.pnlBlack = new System.Windows.Forms.Panel();
             this.lblUserName = new System.Windows.Forms.Label();
             this.blackScore = new System.Windows.Forms.Panel();
+            this.lblRivalColor = new System.Windows.Forms.Label();
+            this.lblRivalName = new System.Windows.Forms.Label();
+            this.lblUserColor = new System.Windows.Forms.Label();
             this.btnPause = new System.Windows.Forms.Button();
             this.btnHistory = new System.Windows.Forms.Button();
             this.btnComputer = new System.Windows.Forms.Button();
             this.btnFriend = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.endGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lastMoveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadHistoryGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dataBaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblUserColor = new System.Windows.Forms.Label();
-            this.lblRivalName = new System.Windows.Forms.Label();
-            this.lblRivalColor = new System.Windows.Forms.Label();
             this.boardPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gameDataView)).BeginInit();
             this.infoPanel.SuspendLayout();
@@ -250,6 +241,42 @@
             this.blackScore.Size = new System.Drawing.Size(312, 292);
             this.blackScore.TabIndex = 2;
             // 
+            // lblRivalColor
+            // 
+            this.lblRivalColor.AutoSize = true;
+            this.lblRivalColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRivalColor.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.lblRivalColor.Location = new System.Drawing.Point(175, 62);
+            this.lblRivalColor.Name = "lblRivalColor";
+            this.lblRivalColor.Size = new System.Drawing.Size(130, 33);
+            this.lblRivalColor.TabIndex = 11;
+            this.lblRivalColor.Text = "as white";
+            this.lblRivalColor.Visible = false;
+            // 
+            // lblRivalName
+            // 
+            this.lblRivalName.AutoSize = true;
+            this.lblRivalName.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRivalName.ForeColor = System.Drawing.Color.Yellow;
+            this.lblRivalName.Location = new System.Drawing.Point(-2, 62);
+            this.lblRivalName.Name = "lblRivalName";
+            this.lblRivalName.Size = new System.Drawing.Size(172, 33);
+            this.lblRivalName.TabIndex = 10;
+            this.lblRivalName.Text = "Rival name";
+            this.lblRivalName.Visible = false;
+            // 
+            // lblUserColor
+            // 
+            this.lblUserColor.AutoSize = true;
+            this.lblUserColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserColor.ForeColor = System.Drawing.Color.Black;
+            this.lblUserColor.Location = new System.Drawing.Point(175, 14);
+            this.lblUserColor.Name = "lblUserColor";
+            this.lblUserColor.Size = new System.Drawing.Size(131, 33);
+            this.lblUserColor.TabIndex = 9;
+            this.lblUserColor.Text = "as black";
+            this.lblUserColor.Visible = false;
+            // 
             // btnPause
             // 
             this.btnPause.BackColor = System.Drawing.Color.Yellow;
@@ -306,120 +333,19 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.viewToolStripMenuItem,
-            this.aboutToolStripMenuItem,
-            this.helpToolStripMenuItem});
+            this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(781, 24);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // fileToolStripMenuItem
-            // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newGameToolStripMenuItem,
-            this.endGameToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
-            // 
-            // newGameToolStripMenuItem
-            // 
-            this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.newGameToolStripMenuItem.Text = "New Game";
-            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
-            // 
-            // endGameToolStripMenuItem
-            // 
-            this.endGameToolStripMenuItem.Name = "endGameToolStripMenuItem";
-            this.endGameToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.endGameToolStripMenuItem.Text = "End Game";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
-            // 
-            // viewToolStripMenuItem
-            // 
-            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lastMoveToolStripMenuItem,
-            this.loadHistoryGameToolStripMenuItem,
-            this.dataBaseToolStripMenuItem});
-            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.viewToolStripMenuItem.Text = "View";
-            // 
-            // lastMoveToolStripMenuItem
-            // 
-            this.lastMoveToolStripMenuItem.Name = "lastMoveToolStripMenuItem";
-            this.lastMoveToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.lastMoveToolStripMenuItem.Text = "Last Move";
-            // 
-            // loadHistoryGameToolStripMenuItem
-            // 
-            this.loadHistoryGameToolStripMenuItem.Name = "loadHistoryGameToolStripMenuItem";
-            this.loadHistoryGameToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.loadHistoryGameToolStripMenuItem.Text = "Load History Game";
-            // 
-            // dataBaseToolStripMenuItem
-            // 
-            this.dataBaseToolStripMenuItem.Name = "dataBaseToolStripMenuItem";
-            this.dataBaseToolStripMenuItem.Size = new System.Drawing.Size(175, 22);
-            this.dataBaseToolStripMenuItem.Text = "DataBase";
-            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            // 
-            // lblUserColor
-            // 
-            this.lblUserColor.AutoSize = true;
-            this.lblUserColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserColor.ForeColor = System.Drawing.Color.Black;
-            this.lblUserColor.Location = new System.Drawing.Point(175, 14);
-            this.lblUserColor.Name = "lblUserColor";
-            this.lblUserColor.Size = new System.Drawing.Size(131, 33);
-            this.lblUserColor.TabIndex = 9;
-            this.lblUserColor.Text = "as black";
-            this.lblUserColor.Visible = false;
-            // 
-            // lblRivalName
-            // 
-            this.lblRivalName.AutoSize = true;
-            this.lblRivalName.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRivalName.ForeColor = System.Drawing.Color.Yellow;
-            this.lblRivalName.Location = new System.Drawing.Point(-2, 62);
-            this.lblRivalName.Name = "lblRivalName";
-            this.lblRivalName.Size = new System.Drawing.Size(172, 33);
-            this.lblRivalName.TabIndex = 10;
-            this.lblRivalName.Text = "Rival name";
-            this.lblRivalName.Visible = false;
-            // 
-            // lblRivalColor
-            // 
-            this.lblRivalColor.AutoSize = true;
-            this.lblRivalColor.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRivalColor.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.lblRivalColor.Location = new System.Drawing.Point(175, 62);
-            this.lblRivalColor.Name = "lblRivalColor";
-            this.lblRivalColor.Size = new System.Drawing.Size(130, 33);
-            this.lblRivalColor.TabIndex = 11;
-            this.lblRivalColor.Text = "as white";
-            this.lblRivalColor.Visible = false;
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // GameBoard
             // 
@@ -464,16 +390,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.Label lblTurn;
         private System.Windows.Forms.Label lblUserName;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newGameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem endGameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem lastMoveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadHistoryGameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dataBaseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.Panel pnlWhiteLose;
         private System.Windows.Forms.Panel pnlBlackLose;
         private System.Windows.Forms.Panel pnlWhite;
